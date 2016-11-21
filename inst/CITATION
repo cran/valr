@@ -1,0 +1,13 @@
+citHeader("To cite valr in publications use:")
+
+citEntry(entry        = "Unpublished",
+         title        = "Genome Interval Arithmetic in R with {valr}",
+         author       = personList(as.person("Ryan Sheridan"),
+                                   as.person("Kent Riemondy"),
+                                   as.person("Jay Hesselberth")),
+         note         = "to be deposited in bioArxiv.",
+         
+         textVersion  =
+           paste("Riemondy et al. (2016).",
+                 "Genome Interval Arithmetic in R with valr.")
+)
