@@ -3,7 +3,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "img/overview-",
-  fig.height = 3,
+  fig.height = 4,
   fig.align = "center",
   fig.width = 4
 )
@@ -32,8 +32,10 @@ nearby %>%
 
 ## ----db------------------------------------------------------------------
 # access the `refGene` tbl on the `hg38` assembly.
-ucsc <- db_ucsc('hg38')
-tbl(ucsc, 'refGene')
+if(require(RMySQL)) {
+  ucsc <- db_ucsc('hg38')
+  tbl(ucsc, 'refGene')
+}
 
 ## ----intersect_glyph-----------------------------------------------------
 x <- tibble::tribble(

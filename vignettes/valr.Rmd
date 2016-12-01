@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 2
     vignette: >
-      %\VignetteIndexEntry{valr}
+      %\VignetteIndexEntry{valr Overview}
       %\VignetteEngine{knitr::rmarkdown}
       %\VignetteEncoding{UTF-8}
 ---
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "img/overview-",
-  fig.height = 3,
+  fig.height = 4,
   fig.align = "center",
   fig.width = 4
 )
@@ -63,14 +63,20 @@ nearby %>%
   filter(abs(.dist) < 1000)
 ```
 
+### Input data
+
+`valr` assigns common column names to facilitate comparisons between tbls. All tbls will have `chrom`, `start`, and `end` columns, and some tbls from multi-column formats will have additional pre-determined column names. See the `read_bed()` documentation for details.
+
 ### Remote databases
 
 Remote databases can be accessed with `db_ucsc()` (to access the UCSC Browser) and `db_ensembl()` (to access Ensembl databases).
 
 ```{r db}
 # access the `refGene` tbl on the `hg38` assembly.
-ucsc <- db_ucsc('hg38')
-tbl(ucsc, 'refGene')
+if(require(RMySQL)) {
+  ucsc <- db_ucsc('hg38')
+  tbl(ucsc, 'refGene')
+}
 ```
 
 ### Visual documentation

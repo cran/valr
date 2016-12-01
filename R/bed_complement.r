@@ -39,13 +39,11 @@
 #' 
 #' # intervals not covered by x
 #' bed_complement(x, genome)
-
+#'
 #' @export
 bed_complement <- function(x, genome) {
 
-  if ( ! is_merged(x) ) {
-    res <- bed_merge(x)
-  } 
+  res <- bed_merge(x)
  
   # non-overlapping chroms
   chroms_no_overlaps <- anti_join(genome, res, by = 'chrom')
