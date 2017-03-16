@@ -36,7 +36,7 @@ Absolute distances are scaled by the inter-reference gap for the
 
 Interval statistics can be used in combination with 
   \code{\link[dplyr]{group_by}} and \code{\link[dplyr]{do}} to calculate 
-  statistics for subsets of data. See the Interval statistics vignette for
+  statistics for subsets of data. See \code{vignette('interval-stats')} for
   examples.
 }
 \examples{
@@ -67,4 +67,3 @@ Other interval-stats: \code{\link{bed_fisher}},
   \code{\link{bed_jaccard}}, \code{\link{bed_projection}},
   \code{\link{bed_reldist}}
 }
-

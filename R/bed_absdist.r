@@ -62,7 +62,7 @@ bed_absdist <- function(x, y, genome) {
   
   # convert groups_xy to character vector
   if (!is.null(groups_xy)){
-    groups_xy <- purrr::map_chr(groups_xy, as.character)
+    groups_xy <- as.character(groups_xy)
   }
   
   # calculate reference sizes
@@ -86,7 +86,7 @@ bed_absdist <- function(x, y, genome) {
   x_missing <- mutate(x_missing, .absdist = NA, .absdist_scaled = NA)
   res <- bind_rows(res, x_missing)
   
-  res <- bed_sort(res)
+  res <- arrange(res, chrom, start)
   
   res
 }

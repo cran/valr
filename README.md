@@ -2,7 +2,7 @@
 valr
 ====
 
-[![Build Status](https://travis-ci.org/jayhesselberth/valr.svg?branch=master)](https://travis-ci.org/jayhesselberth/valr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jayhesselberth/valr?branch=master&svg=true)](https://ci.appveyor.com/project/jayhesselberth/valr) [![Coverage Status](https://img.shields.io/codecov/c/github/jayhesselberth/valr/master.svg)](https://codecov.io/github/jayhesselberth/valr?branch=master) [![](http://www.r-pkg.org/badges/version/valr)](http://www.r-pkg.org/pkg/valr)
+[![Build Status](https://travis-ci.org/rnabioco/valr.svg?branch=master)](https://travis-ci.org/rnabioco/valr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/rnabioco/valr?branch=master&svg=true)](https://ci.appveyor.com/project/jayhesselberth/valr) [![Coverage Status](https://img.shields.io/codecov/c/github/rnabioco/valr/master.svg)](https://codecov.io/github/rnabioco/valr?branch=master) [![](http://www.r-pkg.org/badges/version/valr)](http://www.r-pkg.org/pkg/valr) [![](http://cranlogs.r-pkg.org/badges/valr?color=FFD700)](https://CRAN.R-project.org/package=valr)
 
 **`valr` provides tools to read and manipulate genome intervals and signals**, similar to the [`BEDtools`](http://bedtools.readthedocs.org/en/latest/) suite. `valr` enables analysis in the R/RStudio environment, leveraging modern R tools for a terse, expressive syntax. Compute-intensive algorithms are implemented in [`Rcpp`](http://www.rcpp.org/)/C++, and many methods take advantage of the speed and grouping capability provided by [`dplyr`](https://github.com/hadley/dplyr).
 
@@ -19,7 +19,7 @@ The latest development version can be installed from github:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github('jayhesselberth/valr')
+devtools::install_github('rnabioco/valr')
 ```
 
 Why `valr`?
@@ -100,13 +100,13 @@ Function names are similar to their their [BEDtools](http://bedtools.readthedocs
 
 ### Transforming single interval sets
 
--   Intervals are ordered with `bed_sort()`.
-
 -   Interval coordinates are adjusted with `bed_slop()` and `bed_shift()`, and new flanking intervals are created with `bed_flank()`.
 
 -   Nearby intervals are combined with `bed_merge()` and identified (but not merged) with `bed_cluster()`.
 
 -   Intervals not covered by a query are created with `bed_complement()`.
+
+-   Intervals are ordered with `dplyr::arrange()`.
 
 ### Comparing multiple interval sets
 

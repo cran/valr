@@ -7,7 +7,7 @@
 bed_cluster(x, max_dist = 0)
 }
 \arguments{
-\item{x}{tbl of intervals}
+\item{x}{tbl of interval}
 
 \item{max_dist}{maximum distance between clustered intervals.}
 }
@@ -32,7 +32,9 @@ x <- tibble::tribble(
  "chr1", 100,  200,
  "chr1", 180,  250,
  "chr1", 250,  500,
- "chr1", 501,  1000
+ "chr1", 501,  1000,
+ "chr2", 1,    100,
+ "chr2", 150,  200
 )
 
 bed_cluster(x)
@@ -58,4 +60,3 @@ Other single-set-ops: \code{\link{bed_complement}},
   \code{\link{bed_random}}, \code{\link{bed_shift}},
   \code{\link{bed_shuffle}}, \code{\link{bed_slop}}
 }
-

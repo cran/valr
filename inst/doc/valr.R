@@ -30,7 +30,7 @@ nearby %>%
   select(starts_with('name'), .overlap, .dist) %>%
   filter(abs(.dist) < 1000)
 
-## ----db------------------------------------------------------------------
+## ----db, warning = F-----------------------------------------------------
 # access the `refGene` tbl on the `hg38` assembly.
 if(require(RMySQL)) {
   ucsc <- db_ucsc('hg38')
@@ -157,7 +157,7 @@ repeats <- read_bed(valr_example('hg19.rmsk.chr22.bed.gz'), n_fields = 6)
 genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
 shuffle_intervals <- function(n, .data, genome) {
-  replicate(n, bed_shuffle(.data, genome), simplify = FALSE) %>%
+  replicate(n, bed_shuffle(.data, genome, seed = 1010486), simplify = FALSE) %>%
     bind_rows(.id = 'rep') %>%
     group_by(rep) %>% nest()
 }
@@ -169,27 +169,28 @@ shuffled <- shuffle_intervals(n = 100, repeats, genome) %>%
   
 shuffled
 
-## ----benchmarks, echo = FALSE, fig.width=6-------------------------------
-library(microbenchmark)
+## ----benchmarks, echo = FALSE, message = FALSE, fig.width=6--------------
+if(require(microbenchmark)) {
 
-genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
+    genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
-x <- bed_random(genome, n=1e5)
-y <- bed_random(genome, n=1e5)
+    x <- bed_random(genome, n=1e5, seed = 1010486)
+    y <- bed_random(genome, n=1e5, seed = 1010486)
 
-ts <- microbenchmark(
-  bed_random(genome), bed_closest(x, y),
-  bed_intersect(x, y), bed_merge(x),
-  bed_subtract(x, y), bed_complement(x, genome),
-  bed_shuffle(x, genome),
-  times = 1,
-  unit = 's')
+    ts <- microbenchmark(
+      bed_random(genome, seed = 1010486), bed_closest(x, y),
+      bed_intersect(x, y), bed_merge(x),
+      bed_subtract(x, y), bed_complement(x, genome),
+      bed_shuffle(x, genome, seed = 1010486),
+      times = 1,
+      unit = 's')
 
-# from unexported microbenchmark::convert_to_unit
-ts$ntime <- ts$time / 1e9 
+    # from unexported microbenchmark::convert_to_unit
+    ts$ntime <- ts$time / 1e9 
 
-ggplot(ts, aes(y=reorder(expr, ntime), x=ntime)) +
-  geom_point(color='red', size=4) +
-  xlab('execution time (seconds)') + ylab('') +
-  theme_bw()
+    ggplot(ts, aes(y=reorder(expr, ntime), x=ntime)) +
+      geom_point(color='red', size=4) +
+      xlab('execution time (seconds)') + ylab('') +
+      theme_bw()
+}
 

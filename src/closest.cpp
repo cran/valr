@@ -43,21 +43,12 @@ void closest_grouped(intervalVector& vx, intervalVector& vy,
   }
 }
 
-// XXX the following is verbatim from intersect.cpp except for fxn call
-// XXX and an additional column (distance) is added to output df. should be reused
-
 //[[Rcpp::export]]
 DataFrame closest_impl(GroupedDataFrame x, GroupedDataFrame y,
                        const std::string& suffix_x, const std::string& suffix_y) {
 
-//  auto ng_x = x.ngroups() ;
-//  auto ng_y = y.ngroups() ;
-
   DataFrame df_x = x.data() ;
   DataFrame df_y = y.data() ;
-
-//  auto nr_x = df_x.nrows() ;
-//  auto nr_y = df_y.nrows() ;
 
   // for subsetting / return df
   std::vector<int> indices_x ;
@@ -83,7 +74,7 @@ DataFrame closest_impl(GroupedDataFrame x, GroupedDataFrame y,
   List out(ncol_x + ncol_y + 1) ;
 
   // x names, data
-  for (int i=0; i<ncol_x; i++) {
+  for (int i = 0; i < ncol_x; i++) {
     auto name_x = as<std::string>(names_x[i]) ;
     if (name_x != "chrom") {
       name_x += suffix_x ;
@@ -93,15 +84,15 @@ DataFrame closest_impl(GroupedDataFrame x, GroupedDataFrame y,
   }
 
   // y names, data
-  for (int i=0; i<ncol_y; i++) {
+  for (int i = 0; i < ncol_y; i++) {
     auto name_y = as<std::string>(names_y[i]) ;
 
     if (name_y == "chrom") continue ;
 
     name_y += suffix_y ;
 
-    names[i+ncol_x-1] = name_y ;
-    out[i+ncol_x-1] = subset_y[i] ;
+    names[i + ncol_x - 1] = name_y ;
+    out[i + ncol_x - 1] = subset_y[i] ;
   }
 
   // overlaps

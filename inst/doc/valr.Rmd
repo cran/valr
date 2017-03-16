@@ -1,13 +1,12 @@
 ---
 title: 'valr overview'
-author: "Jay Hesselberth <jay.hesselberth@gmail.com>"
 date: '`r Sys.Date()`'
 output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 2
     vignette: >
-      %\VignetteIndexEntry{valr Overview}
+      %\VignetteIndexEntry{Overview}
       %\VignetteEngine{knitr::rmarkdown}
       %\VignetteEncoding{UTF-8}
 ---
@@ -71,7 +70,7 @@ nearby %>%
 
 Remote databases can be accessed with `db_ucsc()` (to access the UCSC Browser) and `db_ensembl()` (to access Ensembl databases).
 
-```{r db}
+```{r db, warning = F}
 # access the `refGene` tbl on the `hg38` assembly.
 if(require(RMySQL)) {
   ucsc <- db_ucsc('hg38')
@@ -259,7 +258,7 @@ repeats <- read_bed(valr_example('hg19.rmsk.chr22.bed.gz'), n_fields = 6)
 genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
 shuffle_intervals <- function(n, .data, genome) {
-  replicate(n, bed_shuffle(.data, genome), simplify = FALSE) %>%
+  replicate(n, bed_shuffle(.data, genome, seed = 1010486), simplify = FALSE) %>%
     bind_rows(.id = 'rep') %>%
     group_by(rep) %>% nest()
 }
@@ -276,29 +275,30 @@ shuffled
 
 Certain algorithms in `valr` were implemented in `Rcpp` to enable fluid interactive analysis.  This graph illustrates the timing of functions in `valr` for two sets of 100,000 random 1 kilobase intervals from the hg19 genome.
 
-```{r benchmarks, echo = FALSE, fig.width=6}
-library(microbenchmark)
+```{r benchmarks, echo = FALSE, message = FALSE, fig.width=6}
+if(require(microbenchmark)) {
 
-genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
+    genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
-x <- bed_random(genome, n=1e5)
-y <- bed_random(genome, n=1e5)
+    x <- bed_random(genome, n=1e5, seed = 1010486)
+    y <- bed_random(genome, n=1e5, seed = 1010486)
 
-ts <- microbenchmark(
-  bed_random(genome), bed_closest(x, y),
-  bed_intersect(x, y), bed_merge(x),
-  bed_subtract(x, y), bed_complement(x, genome),
-  bed_shuffle(x, genome),
-  times = 1,
-  unit = 's')
+    ts <- microbenchmark(
+      bed_random(genome, seed = 1010486), bed_closest(x, y),
+      bed_intersect(x, y), bed_merge(x),
+      bed_subtract(x, y), bed_complement(x, genome),
+      bed_shuffle(x, genome, seed = 1010486),
+      times = 1,
+      unit = 's')
 
-# from unexported microbenchmark::convert_to_unit
-ts$ntime <- ts$time / 1e9 
+    # from unexported microbenchmark::convert_to_unit
+    ts$ntime <- ts$time / 1e9 
 
-ggplot(ts, aes(y=reorder(expr, ntime), x=ntime)) +
-  geom_point(color='red', size=4) +
-  xlab('execution time (seconds)') + ylab('') +
-  theme_bw()
+    ggplot(ts, aes(y=reorder(expr, ntime), x=ntime)) +
+      geom_point(color='red', size=4) +
+      xlab('execution time (seconds)') + ylab('') +
+      theme_bw()
+}
 ```
  
 ## API
@@ -315,7 +315,7 @@ Function names are similar to their their [BEDtools][1] counterparts, with some 
 
 ### Transforming single interval sets
 
-* Intervals are ordered with `bed_sort()`.
+* Intervals are ordered with `dplyr::arrange()`. See `?sorting` for examples.
 
 * Interval coordinates are adjusted with `bed_slop()` and `bed_shift()`, and new flanking intervals are created with `bed_flank()`.
 

@@ -1,7 +1,7 @@
 Package: valr
 Type: Package
 Title: Genome Interval Arithmetic in R
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(
     person('Jay', 'Hesselberth', role = c('aut', 'cre'), email = 'jay.hesselberth@gmail.com'),
     person('Kent', 'Riemondy', role = c('aut'), email = 'kent.riemondy@ucdenver.edu'),
@@ -12,21 +12,21 @@ Description: Read and manipulate genome intervals and signals. Provides
              enabling interactive analysis and visualization of genome-scale data. 
 License: MIT + file LICENSE
 Depends: R (>= 3.1.2)
-Imports: dplyr (>= 0.5.0), lazyeval, purrr, readr, stringr, tibble,
-        tidyr, broom, shiny, ggplot2,
+Imports: dplyr (>= 0.5.0), lazyeval, readr, stringr, tibble, tidyr,
+        broom, ggplot2,
 SystemRequirements: C++11
 LinkingTo: Rcpp (>= 0.12.8), BH, dplyr (>= 0.5.0)
-Suggests: knitr, rmarkdown, testthat, microbenchmark, covr,
-        shinydashboard, RMySQL,
+Suggests: knitr, rmarkdown, testthat, microbenchmark, covr, RMySQL,
+        purrr
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
-URL: http://github.com/jayhesselberth/valr/
-BugReports: https://github.com/jayhesselberth/valr/issues
+RoxygenNote: 6.0.1
+URL: http://github.com/rnabioco/valr/
+BugReports: https://github.com/rnabioco/valr/issues
 NeedsCompilation: yes
-Packaged: 2016-12-01 07:21:24 UTC; jayhesselberth
+Packaged: 2017-03-16 10:30:52 UTC; jayhesselberth
 Author: Jay Hesselberth [aut, cre],
   Kent Riemondy [aut],
   Ryan Sheridan [ctb]
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-12-01 11:28:13
+Date/Publication: 2017-03-16 13:35:08

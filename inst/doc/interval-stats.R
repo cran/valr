@@ -49,7 +49,7 @@ obs_stats <- distance_stats(rpts, tss, genome, 'name', 'obs')
 obs_stats
 
 ## ----compute_shf---------------------------------------------------------
-shfs <- bed_shuffle(rpts, genome, within = TRUE)
+shfs <- bed_shuffle(rpts, genome, within = TRUE, seed = 1010486)
 shf_stats <- distance_stats(shfs, tss, genome, 'name', 'shuf')
 
 ## ----bind_res------------------------------------------------------------
