@@ -1,4 +1,22 @@
-# valr 0.1.2 (unreleased)
+# valr 0.2.0
+
+## Major changes
+
+* Package dplyr v0.5.0 headers with valr to remove dplyr LinkingTo dependency.
+
+* `bed_intersect()` now accepts multiple tbls for intersection (#220 @kriemo).
+
+* new `tbl_interval()` and `tbl_genome()` that wrap tibbles and enforce strict column naming. `trbl_interval()` and `trbl_genome()` are constructors that take `tibble::tribble()` formatting and `is.tbl_interval()` and `is.tbl_genome()` are used to check for valid classes.
+
+## Minor changes
+
+* intervals returned from `bed_random()` are sorted by `chrom` and `start` by default.
+  
+## Bug fixes
+
+* Merge intervals in `bed_jaccard()` and use numeric values for calculation (fixes #204).
+
+# valr 0.1.2
 
 ## Major changes
 
@@ -12,7 +30,7 @@
 
 * Make `.id` values sequential across chroms in `bed_cluster()` output (#171)
 
-* Transfer repository to http:://github.com/rnabioco/valr, update links and docs.
+* Transfer repository to http://github.com/rnabioco/valr, update links and docs.
 
 * Move shiny app to new repo (http://github.com/rnabioco/valrdata).
 

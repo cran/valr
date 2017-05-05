@@ -156,6 +156,7 @@ library(tidyr)
 repeats <- read_bed(valr_example('hg19.rmsk.chr22.bed.gz'), n_fields = 6) 
 genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
+
 shuffle_intervals <- function(n, .data, genome) {
   replicate(n, bed_shuffle(.data, genome, seed = 1010486), simplify = FALSE) %>%
     bind_rows(.id = 'rep') %>%
@@ -174,21 +175,25 @@ if(require(microbenchmark)) {
 
     genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
-    x <- bed_random(genome, n=1e5, seed = 1010486)
-    y <- bed_random(genome, n=1e5, seed = 1010486)
+    seed <- 1010486
+    
+    x <- bed_random(genome, n = 1e6, seed = seed)
+    y <- bed_random(genome, n = 1e6, seed = seed)
 
-    ts <- microbenchmark(
-      bed_random(genome, seed = 1010486), bed_closest(x, y),
+    res <- microbenchmark(
+      bed_random(genome, seed = seed), bed_closest(x, y),
       bed_intersect(x, y), bed_merge(x),
       bed_subtract(x, y), bed_complement(x, genome),
-      bed_shuffle(x, genome, seed = 1010486),
+      bed_shuffle(x, genome, seed = seed),
+      bed_absdist(x, y, genome), bed_reldist(x, y),
+      bed_jaccard(x, y), bed_fisher(x, y, genome),
       times = 1,
       unit = 's')
 
     # from unexported microbenchmark::convert_to_unit
-    ts$ntime <- ts$time / 1e9 
+    res$ntime <- res$time / 1e9 
 
-    ggplot(ts, aes(y=reorder(expr, ntime), x=ntime)) +
+    ggplot(res, aes(y=reorder(expr, ntime), x=ntime)) +
       geom_point(color='red', size=4) +
       xlab('execution time (seconds)') + ylab('') +
       theme_bw()
