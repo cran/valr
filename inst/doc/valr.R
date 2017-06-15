@@ -30,12 +30,41 @@ nearby %>%
   select(starts_with('name'), .overlap, .dist) %>%
   filter(abs(.dist) < 1000)
 
-## ----db, warning = F-----------------------------------------------------
-# access the `refGene` tbl on the `hg38` assembly.
-if(require(RMySQL)) {
-  ucsc <- db_ucsc('hg38')
-  tbl(ucsc, 'refGene')
-}
+## ----file_io-------------------------------------------------------------
+bed_file <- valr_example("3fields.bed.gz")
+read_bed(bed_file) # accepts filepaths or URLs
+
+## ----trbl_ivls-----------------------------------------------------------
+bed <- trbl_interval(
+  ~chrom, ~start, ~end, 
+  "chr1", 1657492, 2657492, 
+  "chr2", 2501324, 3094650
+)
+bed
+
+## ----zero-based----------------------------------------------------------
+# for a chromosome 100 basepairs in length
+whole_chrom <- trbl_interval(
+  ~chrom, ~start, ~end, 
+  "chr1", 0, 100
+)
+whole_chrom
+
+# for single basepair intervals
+single_bases <- trbl_interval(
+  ~chrom, ~start, ~end, 
+  "chr1", 0, 1, # first base of chromosome
+  "chr1", 1, 2,  # second base of chromosome
+  "chr1", 99, 100 # last base of chromosome
+  )
+single_bases
+
+## ----db, warning = F, eval = F-------------------------------------------
+#  # access the `refGene` tbl on the `hg38` assembly.
+#  if(require(RMySQL)) {
+#    ucsc <- db_ucsc('hg38')
+#    tbl(ucsc, 'refGene')
+#  }
 
 ## ----intersect_glyph-----------------------------------------------------
 x <- tibble::tribble(

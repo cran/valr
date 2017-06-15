@@ -49,8 +49,7 @@ obs_stats <- distance_stats(rpts, tss, genome, 'name', 'obs')
 obs_stats
 
 ## ----compute_shf---------------------------------------------------------
-seed <- 1010486
-shfs <- bed_shuffle(rpts, genome, within = TRUE, seed = seed)
+shfs <- bed_shuffle(rpts, genome, within = TRUE)
 shf_stats <- distance_stats(shfs, tss, genome, 'name', 'shuf')
 
 ## ----bind_res------------------------------------------------------------
@@ -63,15 +62,12 @@ res <- bind_rows(obs_stats, shf_stats) %>%
 
 res
 
-## ----pvalues-------------------------------------------------------------
+## ----pvalues, warning=FALSE----------------------------------------------
 library(broom)
 
-# silence the tests with ties ...
-ks.test.quiet <- function(...) {suppressWarnings(ks.test(...))}
-
-pvals <- res %>% do(twosided = broom::tidy(ks.test.quiet(.$obs, .$shuf)),
-                    less = broom::tidy(ks.test.quiet(.$obs, .$shuf, alternative = 'less')),
-                    greater = broom::tidy(ks.test.quiet(.$obs, .$shuf, alternative = 'greater'))) %>%
+pvals <- res %>% do(twosided = tidy(ks.test(.$obs, .$shuf)),
+                    less = tidy(ks.test(.$obs, .$shuf, alternative = 'less')),
+                    greater = tidy(ks.test(.$obs, .$shuf, alternative = 'greater'))) %>%
   tidyr::gather(alt, type, -name, -stat) %>%
   unnest(type) %>%
   select(name:p.value) %>%
@@ -131,7 +127,8 @@ pvals_coding <- projection_stats(rpts, promoters_coding, genome, 'name', 'coding
 pvals_ncoding <- projection_stats(rpts, promoters_ncoding, genome, 'name', 'non_coding')
 
 pvals <-
-  bind_rows(pvals_ncoding, pvals_coding) %>% 
+  bind_rows(pvals_ncoding, pvals_coding) %>%
+  ungroup() %>% 
   tidyr::unnest() %>%
   select(-chrom)
 

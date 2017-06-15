@@ -1,7 +1,7 @@
 Package: valr
 Type: Package
 Title: Genome Interval Arithmetic in R
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
     person('Jay', 'Hesselberth', role = c('aut', 'cre'), email = 'jay.hesselberth@gmail.com'),
     person('Kent', 'Riemondy', role = c('aut'), email = 'kent.riemondy@ucdenver.edu'),
@@ -12,21 +12,21 @@ Description: Read and manipulate genome intervals and signals. Provides
              enabling interactive analysis and visualization of genome-scale data. 
 License: MIT + file LICENSE
 Depends: R (>= 3.1.2)
-Imports: dplyr (>= 0.5.0), lazyeval, readr, stringr, tibble, tidyr,
-        broom, ggplot2,
+Imports: dplyr (>= 0.7.0), rlang, readr, stringr, tibble, broom,
+        ggplot2,
 SystemRequirements: C++11
 LinkingTo: Rcpp (>= 0.12.8), BH,
 Suggests: knitr, rmarkdown, testthat, microbenchmark, covr, RMySQL,
-        purrr
+        purrr, tidyr,
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 URL: http://github.com/rnabioco/valr/
 BugReports: https://github.com/rnabioco/valr/issues
 NeedsCompilation: yes
-Packaged: 2017-05-05 10:47:47 UTC; jayhesselberth
+Packaged: 2017-06-15 12:17:45 UTC; jayhesselberth
 Author: Jay Hesselberth [aut, cre],
   Kent Riemondy [aut],
   Ryan Sheridan [ctb]
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Repository: CRAN
-Date/Publication: 2017-05-05 17:40:09 UTC
+Date/Publication: 2017-06-15 13:45:08 UTC

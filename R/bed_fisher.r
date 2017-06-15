@@ -92,3 +92,4 @@ interval_union <- function(x) {
 
   sum(res$.size)
 }
+

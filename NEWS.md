@@ -1,3 +1,15 @@
+# valr 0.2.0.9000
+
+## Enhancements
+
+* New `create_introns()`, `create_utrs5()` and `create_utrs3()` functions for generating features from BED12 files.
+
+* Speed-ups in `bed_makewindows()` (~50x), `bed_merge()` (~4x), and `bed_flank()` (~4x) (thanks to @kriemo and @sheridar). Thanks to the sponsors of the [Biofrontiers Hackathon](https://hackathon.colorado.edu/) for the caffeine underlying these improvements.
+
+## Bug fixes
+
+* intervals from `bed_random()` are now sorted properly.
+
 # valr 0.2.0
 
 ## Major changes
