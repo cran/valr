@@ -23,7 +23,7 @@ calculated \code{.reldist} values with the following columns:
 \item \code{.freq} frequency of observation
 }
 
-If \code{detail = TRUE}, a new \code{.reldist} column reports the relative
+If \code{detail = TRUE}, the \code{.reldist} column reports the relative
 distance for each input \code{x} interval.
 }
 \description{
@@ -36,16 +36,10 @@ statistics for subsets of data. See \code{vignette('interval-stats')} for
 examples.
 }
 \examples{
-x <- trbl_interval(
-  ~chrom,   ~start,    ~end,
-  "chr1",    75,       125
-)
+genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
-y <- trbl_interval(
-  ~chrom,   ~start,    ~end,
-  "chr1",    50,       100,
-  "chr1",    100,       150
-)
+x <- bed_random(genome, seed = 1010486)
+y <- bed_random(genome, seed = 9203911)
 
 bed_reldist(x, y)
 

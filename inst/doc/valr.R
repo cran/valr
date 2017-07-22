@@ -3,9 +3,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "img/overview-",
-  fig.height = 4,
-  fig.align = "center",
-  fig.width = 4
+  fig.align = "center"
 )
 
 ## ----init, echo = FALSE, message = FALSE---------------------------------
@@ -36,30 +34,33 @@ read_bed(bed_file) # accepts filepaths or URLs
 
 ## ----trbl_ivls-----------------------------------------------------------
 bed <- trbl_interval(
-  ~chrom, ~start, ~end, 
+  ~chrom, ~start,  ~end, 
   "chr1", 1657492, 2657492, 
   "chr2", 2501324, 3094650
 )
+
 bed
 
 ## ----zero-based----------------------------------------------------------
-# for a chromosome 100 basepairs in length
-whole_chrom <- trbl_interval(
+# a chromosome 100 basepairs in length
+chrom <- trbl_interval(
   ~chrom, ~start, ~end, 
-  "chr1", 0, 100
+  "chr1", 0,      100
 )
-whole_chrom
 
-# for single basepair intervals
-single_bases <- trbl_interval(
+chrom
+
+# single basepair intervals
+bases <- trbl_interval(
   ~chrom, ~start, ~end, 
-  "chr1", 0, 1, # first base of chromosome
-  "chr1", 1, 2,  # second base of chromosome
-  "chr1", 99, 100 # last base of chromosome
-  )
-single_bases
+  "chr1", 0,      1, # first base of chromosome
+  "chr1", 1,      2,  # second base of chromosome
+  "chr1", 99,     100 # last base of chromosome
+)
 
-## ----db, warning = F, eval = F-------------------------------------------
+bases
+
+## ----db, warning = FALSE, eval = FALSE-----------------------------------
 #  # access the `refGene` tbl on the `hg38` assembly.
 #  if(require(RMySQL)) {
 #    ucsc <- db_ucsc('hg38')
@@ -177,54 +178,4 @@ ggplot(res, aes(x = .win_id, y = win_mean)) +
   xlab('Position (bp from TSS)') + ylab('Signal') + 
   ggtitle('Human H3K4me3 signal near transcription start sites') +
   theme_classic()
-
-## ----reldist_shuffle, message = FALSE, warning = FALSE-------------------
-library(purrr)
-library(tidyr)
-
-repeats <- read_bed(valr_example('hg19.rmsk.chr22.bed.gz'), n_fields = 6) 
-genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
-
-
-shuffle_intervals <- function(n, .data, genome) {
-  replicate(n, bed_shuffle(.data, genome, seed = 1010486), simplify = FALSE) %>%
-    bind_rows(.id = 'rep') %>%
-    group_by(rep) %>% nest()
-}
-
-shuffled <- shuffle_intervals(n = 100, repeats, genome) %>%
-  mutate(jaccard = data %>%
-           map(bed_jaccard, repeats) %>%
-           map_dbl("jaccard"))
-  
-shuffled
-
-## ----benchmarks, echo = FALSE, message = FALSE, fig.width=6--------------
-if(require(microbenchmark)) {
-
-    genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
-
-    seed <- 1010486
-    
-    x <- bed_random(genome, n = 1e6, seed = seed)
-    y <- bed_random(genome, n = 1e6, seed = seed)
-
-    res <- microbenchmark(
-      bed_random(genome, seed = seed), bed_closest(x, y),
-      bed_intersect(x, y), bed_merge(x),
-      bed_subtract(x, y), bed_complement(x, genome),
-      bed_shuffle(x, genome, seed = seed),
-      bed_absdist(x, y, genome), bed_reldist(x, y),
-      bed_jaccard(x, y), bed_fisher(x, y, genome),
-      times = 1,
-      unit = 's')
-
-    # from unexported microbenchmark::convert_to_unit
-    res$ntime <- res$time / 1e9 
-
-    ggplot(res, aes(y=reorder(expr, ntime), x=ntime)) +
-      geom_point(color='red', size=4) +
-      xlab('execution time (seconds)') + ylab('') +
-      theme_bw()
-}
 

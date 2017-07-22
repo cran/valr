@@ -18,7 +18,8 @@ bed_closest(x, y, overlap = TRUE, suffix = c(".x", ".y"))
 \value{
 \code{\link[=tbl_interval]{tbl_interval()}} with additional columns:
 \itemize{
-\item \code{.dist} distance to closest interval, negative distances denote upstream intervals
+\item \code{.dist} distance to closest interval. Negative distances
+denote upstream intervals.
 \item \code{.overlap} overlap with closest interval
 }
 }
@@ -35,13 +36,13 @@ first be inverted using \code{\link[=flip_strands]{flip_strands()}}.
 \examples{
 x <- trbl_interval(
   ~chrom, ~start, ~end,
-  'chr1',      100,     125
+  'chr1', 100,    125
 )
 
 y <- trbl_interval(
   ~chrom, ~start, ~end,
-  'chr1',      25,      50,
-  'chr1',     140,     175
+  'chr1', 25,     50,
+  'chr1', 140,    175
 )
 
 bed_glyph(bed_closest(x, y))
@@ -53,7 +54,7 @@ x <- trbl_interval(
 )
 
 y <- trbl_interval(
-~chrom, ~start, ~end,
+  ~chrom, ~start, ~end,
   "chr1", 100,    200,
   "chr1", 150,    200,
   "chr1", 550,    580,

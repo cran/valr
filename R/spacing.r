@@ -7,6 +7,8 @@
 #'
 #' @return [tbl_interval()] with `.spacing` column.
 #'
+#' @family utilities
+#'
 #' @examples
 #' x <- trbl_interval(
 #'   ~chrom, ~start, ~end,
@@ -20,7 +22,7 @@
 #' @export
 interval_spacing <- function(x) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
 
   res <- bed_merge(x)
 

@@ -9,58 +9,44 @@
 #'
 #' @family interval statistics
 #'
-#' @return [tbl_interval()] with the following columns:
+#' @return
+#' [tbl_interval()] with the following columns:
+#'
 #'   - `chrom` the name of chromosome tested if `by_chrom = TRUE`,
-#'      otherwise has a value of `'whole_genome'`
+#'      otherwise has a value of `whole_genome`
+#'
 #'   - `p.value` p-value from a binomial test. p-values > 0.5
-#'      will be reported as 1 - p-value and `lower_tail` will be `FALSE`
+#'      are converted to `1 - p-value` and `lower_tail` is `FALSE`
+#'
 #'   - `obs_exp_ratio` ratio of observed to expected overlap frequency
-#'   - `lower_tail` a boolean column. `TRUE` indicates the observed overlaps
-#'      is in the lower tail of the distribution (e.g., less overlap than expected); `FALSE`
-#'      indicates that the observed overlaps are in the upper tail of the distribution
-#'      (e.g., more overlap than expected)
+#'
+#'   - `lower_tail` `TRUE` indicates the observed overlaps are in the lower tail
+#'     of the distribution (e.g., less overlap than expected). `FALSE` indicates
+#'     that the observed overlaps are in the upper tail of the distribution (e.g.,
+#'     more overlap than expected)
 #'
 #' @seealso
 #'   \url{http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002529}
 #'
 #' @examples
-#' genome <- trbl_genome(
-#'  ~chrom, ~size,
-#'  "chr1", 1e4,
-#'  "chr2", 2e4,
-#'  "chr3", 4e4
-#' )
+#' genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 #'
-#' x <- trbl_interval(
-#'  ~chrom, ~start, ~end,
-#'  "chr1", 100,    200,
-#'  "chr1", 250,    400,
-#'  "chr1", 500,    600,
-#'  "chr1", 1000,   2000,
-#'  "chr2", 100,    200
-#' )
-#'
-#' y <- trbl_interval(
-#'  ~chrom, ~start, ~end,
-#'  "chr1", 150,    175,
-#'  "chr1", 525,    575,
-#'  "chr1", 1100,   1200,
-#'  "chr1", 1400,   1600,
-#'  "chr2", 200,    1500
-#' )
+#' x <- bed_random(genome, seed = 1010486)
+#' y <- bed_random(genome, seed = 9203911)
 #'
 #' bed_projection(x, y, genome)
+#'
 #' bed_projection(x, y, genome, by_chrom = TRUE)
 #'
 #' @export
 bed_projection <- function(x, y, genome, by_chrom = FALSE) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
   #find midpoints
-  x <- mutate(x, .midpoint = round((end + start) / 2),
+  x <- mutate(x, .midpoint = round( (end + start) / 2),
               start = .midpoint,
               end = .midpoint + 1)
   x <- select(x, -.midpoint)
@@ -79,8 +65,10 @@ bed_projection <- function(x, y, genome, by_chrom = FALSE) {
   total_counts <- group_by(x, chrom)
   total_counts <- summarize(total_counts, .total_trials = n())
   obs_counts <- full_join(obs_counts, total_counts, by = "chrom")
-  obs_counts <- mutate(obs_counts, .obs_counts = if_else(is.na(.obs_counts),
-                                                         as.integer(0), .obs_counts))
+  obs_counts <- mutate(obs_counts,
+                       .obs_counts = if_else(is.na(.obs_counts),
+                                             as.integer(0),
+                                             .obs_counts))
 
   # calculate probabilty of overlap by chance
   y <- mutate(y, .length = end - start)
@@ -108,7 +96,8 @@ bed_projection <- function(x, y, genome, by_chrom = FALSE) {
     res <- summarize(res,
                      .obs_counts = sum(.obs_counts),
                      .total_trials = sum(.total_trials),
-                     .exp_prob = sum(.reference_coverage) / sum(as.numeric(size)))
+                     .exp_prob = sum(.reference_coverage) /
+                       sum(as.numeric(size)))
 
     res <- summarize(res,
                      chrom = "whole_genome",

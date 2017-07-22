@@ -12,6 +12,7 @@
 #'   `group_by` operations (see vignette).
 #'
 #' @family utilities
+#'
 #' @return [tbl_interval()] with `.win_id` column that contains a numeric
 #'   identifier for the window.
 #'
@@ -49,11 +50,11 @@ bed_makewindows <- function(x, genome, win_size = 0,
                             step_size = 0, num_win = 0,
                             reverse = FALSE) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
   if (win_size == 0 && num_win == 0)
-    stop('specify either `win_size` or `num_win`', call. = FALSE)
+    stop("specify either `win_size` or `num_win`", call. = FALSE)
 
   # dummy win_ids
   x <- mutate(x, .win_id = 0)

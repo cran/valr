@@ -5,6 +5,7 @@
 #' @return [tbl_interval()]
 #'
 #' @family single set operations
+#'
 #' @seealso
 #'   \url{http://bedtools.readthedocs.org/en/latest/content/tools/slop.html}
 #'
@@ -46,17 +47,16 @@ bed_slop <- function(x, genome, both = 0, left = 0,
                      right = 0, fraction = FALSE,
                      strand = FALSE, trim = FALSE, ...) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
-  if (strand && ! 'strand' %in% colnames(x))
-    stop('expected `strand` in `x`', call. = FALSE)
+  if (strand && ! "strand" %in% colnames(x))
+    stop("expected `strand` in `x`", call. = FALSE)
 
   if (both != 0 && (left != 0 || right != 0))
-    stop('ambiguous side spec for bed_slop', call. = FALSE)
+    stop("ambiguous side spec for bed_slop", call. = FALSE)
 
-  if (fraction)
-    x <- mutate(x, .size = end - start)
+  if (fraction) x <- mutate(x, .size = end - start)
 
   if (both != 0) {
     if (fraction) {
@@ -72,17 +72,17 @@ bed_slop <- function(x, genome, both = 0, left = 0,
     # calc left and right based on strand
     if (strand) {
       if (fraction) {
-        res <- mutate(x, start = ifelse(strand == '+',
+        res <- mutate(x, start = ifelse(strand == "+",
                                 start - round( left * .size ),
                                 start - round( right * .size )),
-                             end = ifelse(strand == '+',
+                             end = ifelse(strand == "+",
                                 end + round( right * .size ),
                                 end + round( left * .size )))
       } else {
-        res <- mutate(x, start = ifelse(strand == '+',
+        res <- mutate(x, start = ifelse(strand == "+",
                                 start - left,
                                 start - right),
-                             end = ifelse(strand == '+',
+                             end = ifelse(strand == "+",
                                 end + right,
                                 end + left))
       }
@@ -102,7 +102,7 @@ bed_slop <- function(x, genome, both = 0, left = 0,
   if ( fraction ) res <- select(res, -.size)
 
   res <- bound_intervals(res, genome, trim)
-  res <- arrange(res, chrom, start)
+  res <- bed_sort(res)
 
   res
 }

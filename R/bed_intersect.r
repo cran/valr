@@ -1,26 +1,25 @@
 #' Identify intersecting intervals.
 #'
-#' Report intersecting intervals from `x` and `y` tbls. Book-ended
-#' intervals (or "touching" intervals) have `.overlap` values of `0`)
-#' in the output.
+#' Report intersecting intervals from `x` and `y` tbls. Book-ended intervals
+#' have `.overlap` values of `0` in the output.
 #'
 #' @param x [tbl_interval()]
-#' @param ... single y  [tbl_interval()], multiple y \code{\link{tbl_interval}s}
-#'                   or a list of y  `tbl_intervals`
+#' @param ... one or more (e.g. a list of) `y` [tbl_interval()]s
 #' @param invert report `x` intervals not in `y`
 #' @param suffix colname suffixes in output
 #'
-#' @return [tbl_interval()] with original columns from `x` and `y`,
-#'   suffixed with `.x` and `.y`, and a new `.overlap` column
-#'   with the extent of overlap for the intersecting intervals.
+#' @return
 #'
-#'   If  multiple `y` tbls are supplied, then an additional column `.source` will
-#'   be reported that contains the variable names associated with each interval. All original
-#'   columns from the y tbls will be suffixed with `.y` in the output.
-#'   If named tbls are supplied to `...` (i.e `a = y, b = z` or
-#'    `list(a = y, b = z)`), then the supplied names will be reported instead
-#'   of the variable names (see examples).
+#' [tbl_interval()] with original columns from `x` and `y` suffixed with `.x`
+#' and `.y`, and a new `.overlap` column with the extent of overlap for the
+#' intersecting intervals.
 #'
+#' If  multiple `y` tbls are supplied, the `.source` contains variable names
+#' associated with each interval. All original columns from the `y` are suffixed
+#' with `.y` in the output.
+#'
+#' If `...` contains named inputs (i.e `a = y, b = z` or `list(a = y, b =  z)`),
+#' then `.source` will contain supplied names (see examples).
 #'
 #' @template groups
 #'
@@ -37,22 +36,23 @@
 #' )
 #'
 #' bed_glyph(bed_intersect(x, y))
+#'
 #' bed_glyph(bed_intersect(x, y, invert = TRUE))
 #'
 #' x <- trbl_interval(
 #'   ~chrom, ~start, ~end,
-#'   "chr1", 100,    500,
-#'   "chr2", 200,    400,
-#'   "chr2", 300,    500,
-#'   "chr2", 800,    900
+#'   'chr1', 100,    500,
+#'   'chr2', 200,    400,
+#'   'chr2', 300,    500,
+#'   'chr2', 800,    900
 #' )
 #'
 #' y <- trbl_interval(
 #'   ~chrom, ~start, ~end, ~value,
-#'   "chr1", 150,    400,  100,
-#'   "chr1", 500,    550,  100,
-#'   "chr2", 230,    430,  200,
-#'   "chr2", 350,    430,  300
+#'   'chr1', 150,    400,  100,
+#'   'chr1', 500,    550,  100,
+#'   'chr2', 230,    430,  200,
+#'   'chr2', 350,    430,  300
 #' )
 #'
 #' bed_intersect(x, y)
@@ -66,10 +66,10 @@
 #'
 #' z <- trbl_interval(
 #'   ~chrom, ~start, ~end, ~value,
-#'   "chr1", 150,    400,  100,
-#'   "chr1", 500,    550,  100,
-#'   "chr2", 230,    430,  200,
-#'   "chr2", 750,    900,  400
+#'   'chr1', 150,    400,  100,
+#'   'chr1', 500,    550,  100,
+#'   'chr2', 230,    430,  200,
+#'   'chr2', 750,    900,  400
 #' )
 #'
 #' bed_intersect(x, y, z)
@@ -80,12 +80,12 @@
 #' bed_intersect(x, list(exons = y, introns = z))
 #'
 #' @family multiple set operations
+#'
 #' @seealso
 #' \url{http://bedtools.readthedocs.org/en/latest/content/tools/intersect.html}
 #'
-#'
 #' @export
-bed_intersect <- function(x, ..., invert = FALSE, suffix = c('.x', '.y')) {
+bed_intersect <- function(x, ..., invert = FALSE, suffix = c(".x", ".y")) {
 
   #determine if list supplied to ... or series of variables
   if (typeof(substitute(...)) == "symbol") {
@@ -114,15 +114,15 @@ bed_intersect <- function(x, ..., invert = FALSE, suffix = c('.x', '.y')) {
     multiple_tbls <- TRUE
     # bind_rows preserves grouping
     y <- bind_rows(y_tbl, .id = ".source")
-    select_vars <- list(quo(-one_of('.source')), quo(everything()), '.source')
+    select_vars <- list(quo(-one_of(".source")), quo(everything()), ".source")
     y <- select(y, !!! select_vars)
   } else {
     # only one tbl supplied, so extract out single tbl from list
     y <- y_tbl[[1]]
   }
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
 
   check_suffix(suffix)
 
@@ -134,9 +134,9 @@ bed_intersect <- function(x, ..., invert = FALSE, suffix = c('.x', '.y')) {
   res <- intersect_impl(x, y, suffix$x, suffix$y)
 
   if (invert) {
-    colspec <- c('chrom' = 'chrom',
-                 'start' = paste0('start', suffix$x),
-                 'end' = paste0('end', suffix$x))
+    colspec <- c("chrom" = "chrom",
+                 "start" = paste0("start", suffix$x),
+                 "end" = paste0("end", suffix$x))
     res <- anti_join(x, res, by = colspec)
     res <- ungroup(res)
   }

@@ -56,9 +56,9 @@
 #' @export
 bed_window <- function(x, y, genome, ...) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
   x <- mutate(x, .start = start, .end = end)
 
@@ -75,11 +75,11 @@ bed_window <- function(x, y, genome, ...) {
 
   # pass new list of args to bed_slop
   slop_x <- do.call(bed_slop,
-                    c(list("x" = x, "genome" = genome) , slop_args))
+                    c(list("x" = x, "genome" = genome), slop_args))
 
   # pass new list of args to bed_intersect
   res <- do.call(bed_intersect,
-                 c(list("x" = slop_x, "y" = y) , intersect_args))
+                 c(list("x" = slop_x, "y" = y), intersect_args))
 
   res <- mutate(res, start.x = .start.x, end.x = .end.x)
 

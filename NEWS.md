@@ -1,4 +1,24 @@
-# valr 0.2.0.9000
+# valr 0.3.1
+
+## Enhancements
+
+* A manuscript describing valr has been published in [F1000Research](https://f1000research.com/articles/6-1025/v1).
+
+* New S3 generic `as.tbl_interval()` converts `GenomicRanges::GRanges` objects to `tbl_interval`.
+
+* New `create_tss()` for creating transcription start sites.
+
+* Improve documentation of interval statistics with more complex examples.
+
+## Minor
+
+* `bed_sort()` has been de-deprecated to reduce `arrange` calls in library code.
+
+## Bug fixes
+
+* `bed_merge()` now reports start/end columns if spec is provided (#288)
+
+# valr 0.3.0
 
 ## Enhancements
 

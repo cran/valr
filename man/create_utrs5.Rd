@@ -7,7 +7,7 @@
 create_utrs5(x)
 }
 \arguments{
-\item{x}{\link{tbl_interval} in BED12 format}
+\item{x}{\code{\link[=tbl_interval]{tbl_interval()}} in BED12 format}
 }
 \description{
 Create 5' UTR features.
@@ -17,4 +17,8 @@ x <- read_bed12(valr_example('mm9.refGene.bed.gz'))
 
 create_utrs5(x)
 
+}
+\seealso{
+Other feature functions: \code{\link{create_introns}},
+  \code{\link{create_tss}}, \code{\link{create_utrs3}}
 }

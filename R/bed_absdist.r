@@ -1,7 +1,7 @@
 #' Compute absolute distances between intervals.
 #'
-#' Computes the absolute distance between the midpoints of `x` intervals and
-#' the closest midpoints of `y` intervals.
+#' Computes the absolute distance between the midpoint of each `x` interval and
+#' the midpoints of each closest `y` interval.
 #'
 #' @details Absolute distances are scaled by the inter-reference gap for the
 #'   chromosome as follows. For `Q` query points and `R` reference
@@ -19,8 +19,8 @@
 #' @param y [tbl_interval()]
 #' @param genome [tbl_genome()]
 #'
-#' @return [tbl_interval()] with `.absdist` and `.absdist_scaled`
-#'   columns.
+#' @return
+#' [tbl_interval()] with `.absdist` and `.absdist_scaled` columns.
 #'
 #' @template stats
 #'
@@ -30,40 +30,28 @@
 #' \url{http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002529}
 #'
 #' @examples
-#' x <- trbl_interval(
-#'   ~chrom,   ~start,    ~end,
-#'   "chr1",    75,       125
-#' )
+#' genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 #'
-#' y <- trbl_interval(
-#'   ~chrom,   ~start,    ~end,
-#'   "chr1",    50,       100,
-#'   "chr1",    100,       150
-#' )
-#'
-#' genome <- trbl_genome(
-#'   ~chrom, ~size,
-#'   "chr1", 500,
-#'   "chr2", 1000
-#' )
+#' x <- bed_random(genome, seed = 1010486)
+#' y <- bed_random(genome, seed = 9203911)
 #'
 #' bed_absdist(x, y, genome)
 #'
 #' @export
 bed_absdist <- function(x, y, genome) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
   # find minimum shared groups
   groups_xy <- shared_groups(y, x)
-  groups_vars <- rlang::syms(c('chrom', groups_xy))
+  groups_vars <- rlang::syms(c("chrom", groups_xy))
 
   x <- group_by(x, !!! groups_vars)
   y <- group_by(y, !!! groups_vars)
 
-  res <- absdist_impl(x, y)
+  res <- dist_impl(x, y, distcalc = "absdist")
 
   # convert groups_xy to character vector
   if (!is.null(groups_xy)){
@@ -91,7 +79,7 @@ bed_absdist <- function(x, y, genome) {
   x_missing <- mutate(x_missing, .absdist = NA, .absdist_scaled = NA)
   res <- bind_rows(res, x_missing)
 
-  res <- arrange(res, chrom, start)
+  res <- bed_sort(res)
 
   res
 }

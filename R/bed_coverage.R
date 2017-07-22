@@ -4,18 +4,19 @@
 #' @param y [tbl_interval()]
 #' @param ... extra arguments (not used)
 #'
-#' @note Book-ended intervals are counted as overlapping.
+#' @note Book-ended intervals are included in coverage calculations.
 #'
 #' @template groups
 #'
 #' @family multiple set operations
 #'
-#' @return `x` [tbl_interval()] with the following additional
-#'   columns:
-#'   - `.ints` number of x intersections
-#'   - `.cov` per-base coverage of x intervals
-#'   - `.len` total length of y intervals covered by x intervals
-#'   - `.frac` `.len` scaled by total of y intervals
+#' @return
+#' [tbl_interval()] with the following additional columns:
+#'
+#'   - `.ints` number of `x` intersections
+#'   - `.cov` per-base coverage of `x` intervals
+#'   - `.len` total length of `y` intervals covered by `x` intervals
+#'   - `.frac` `.len` scaled by the number of `y` intervals
 #
 #' @examples
 #' x <- trbl_interval(
@@ -41,13 +42,13 @@
 #' @export
 bed_coverage <- function(x, y, ...) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
 
-  x <- arrange(x, chrom, start)
+  x <- bed_sort(x)
   x <- group_by(x, chrom, add = TRUE)
 
-  y <- arrange(y, chrom, start)
+  y <- bed_sort(y)
   y <- group_by(y, chrom, add = TRUE)
 
   res <- coverage_impl(x, y)

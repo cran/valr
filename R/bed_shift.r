@@ -16,8 +16,8 @@
 #' @examples
 #' x <- trbl_interval(
 #'   ~chrom, ~start, ~end,
-#'  'chr1',      25,      50,
-#'  'chr1',      100,     125
+#'  'chr1',  25,     50,
+#'  'chr1',  100,    125
 #' )
 #'
 #' genome <- trbl_genome(
@@ -29,12 +29,12 @@
 #'
 #' x <- trbl_interval(
 #'    ~chrom, ~start, ~end, ~strand,
-#'    "chr1", 100, 150, "+",
-#'    "chr1", 200, 250, "+",
-#'    "chr2", 300, 350, "+",
-#'    "chr2", 400, 450, "-",
-#'    "chr3", 500, 550, "-",
-#'    "chr3", 600, 650, "-"
+#'    "chr1", 100,    150,  "+",
+#'    "chr1", 200,    250,  "+",
+#'    "chr2", 300,    350,  "+",
+#'    "chr2", 400,    450,  "-",
+#'    "chr3", 500,    550,  "-",
+#'    "chr3", 600,    650,  "-"
 #' )
 #'
 #' genome <- trbl_genome(
@@ -55,10 +55,10 @@
 #' @export
 bed_shift <- function(x, genome, size = 0, fraction = 0, trim = FALSE) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
-  stranded <- 'strand' %in% groups(x)
+  stranded <- "strand" %in% groups(x)
 
   # shift invervals
   if (!stranded && !fraction) {
@@ -76,10 +76,10 @@ bed_shift <- function(x, genome, size = 0, fraction = 0, trim = FALSE) {
 
   # shift by strand
   if (stranded && !fraction){
-    res <- mutate(x, start = ifelse(strand == '+',
+    res <- mutate(x, start = ifelse(strand == "+",
                        start + size,
                        start - size),
-                     end = ifelse(strand == '+',
+                     end = ifelse(strand == "+",
                        end + size,
                        end - size))
   }

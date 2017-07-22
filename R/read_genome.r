@@ -23,10 +23,10 @@
 #'
 #' @export
 read_genome <- function(path) {
-  colnames <- c('chrom', 'size')
+  colnames <- c("chrom", "size")
   genome <- suppressMessages(readr::read_tsv(path, col_names = colnames))
   genome <- arrange(genome, desc(size))
-  genome <- tbl_genome(genome)
+  genome <- as.tbl_genome(genome)
   genome
 }
 
@@ -40,6 +40,8 @@ read_genome <- function(path) {
 #' @param trim adjust coordinates for out-of-bounds intervals
 #'
 #' @return [tbl_interval()]
+#'
+#' @family utilities
 #'
 #' @examples
 #' x <- trbl_interval(
@@ -60,7 +62,7 @@ read_genome <- function(path) {
 #' @export
 bound_intervals <- function(x, genome, trim = FALSE) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
 
   res <- left_join(x, genome, by = "chrom")
   if (trim) {

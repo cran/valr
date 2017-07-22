@@ -5,6 +5,8 @@
 #'
 #' @param x [tbl_interval()]
 #'
+#' @family utilities
+#'
 #' @examples
 #' x <- trbl_interval(
 #'   ~chrom, ~start, ~end, ~strand,
@@ -17,16 +19,16 @@
 #' @export
 flip_strands <- function(x) {
 
-  if (! 'strand' %in% colnames(x))
-    stop('`strand` column not found in `x`', call. = FALSE)
+  if (! "strand" %in% colnames(x))
+    stop("`strand` column not found in `x`", call. = FALSE)
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
 
   # remove existing groups
   groups_x <- groups(x)
   res <- ungroup(x)
 
-  res <- mutate(res, .strand = ifelse(strand == '+', '-', '+'))
+  res <- mutate(res, .strand = ifelse(strand == "+", "-", "+"))
   res <- select(res, -strand)
   res <- rename(res, strand = .strand)
 

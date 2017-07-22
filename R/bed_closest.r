@@ -7,23 +7,26 @@
 #'
 #' @template groups
 #'
-#' @return [tbl_interval()] with additional columns:
-#'   - `.dist` distance to closest interval, negative distances denote upstream intervals
+#' @return
+#' [tbl_interval()] with additional columns:
+#'   - `.dist` distance to closest interval. Negative distances
+#'     denote upstream intervals.
 #'   - `.overlap` overlap with closest interval
 #'
 #' @family multiple set operations
+#'
 #' @seealso \url{http://bedtools.readthedocs.io/en/latest/content/tools/closest.html}
 #'
 #' @examples
 #' x <- trbl_interval(
 #'   ~chrom, ~start, ~end,
-#'   'chr1',      100,     125
+#'   'chr1', 100,    125
 #' )
 #'
 #' y <- trbl_interval(
 #'   ~chrom, ~start, ~end,
-#'   'chr1',      25,      50,
-#'   'chr1',     140,     175
+#'   'chr1', 25,     50,
+#'   'chr1', 140,    175
 #' )
 #'
 #' bed_glyph(bed_closest(x, y))
@@ -35,7 +38,7 @@
 #' )
 #'
 #' y <- trbl_interval(
-#' ~chrom, ~start, ~end,
+#'   ~chrom, ~start, ~end,
 #'   "chr1", 100,    200,
 #'   "chr1", 150,    200,
 #'   "chr1", 550,    580,
@@ -70,17 +73,17 @@
 #'
 #' @export
 bed_closest <- function(x, y, overlap = TRUE,
-                        suffix = c('.x', '.y')){
+                        suffix = c(".x", ".y")){
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
 
   check_suffix(suffix)
 
-  x <- arrange(x, chrom, start)
+  x <- bed_sort(x)
   x <- group_by(x, chrom, add = TRUE)
 
-  y <- arrange(y, chrom, start)
+  y <- bed_sort(y)
   y <- group_by(y, chrom, add = TRUE)
 
   suffix <- list(x = suffix[1], y = suffix[2])

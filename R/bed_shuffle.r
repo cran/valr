@@ -9,7 +9,9 @@
 #' @param seed seed for reproducible intervals
 #'
 #' @return [tbl_interval()]
+#'
 #' @family randomizing operations
+#'
 #' @seealso \url{http://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html}
 #'
 #' @examples
@@ -20,15 +22,16 @@
 #'  "chr3", 4e6
 #' )
 #'
-#' x <- bed_random(genome)
-#' bed_shuffle(x, genome)
+#' x <- bed_random(genome, seed = 1010486)
+#'
+#' bed_shuffle(x, genome, seed = 9830491)
 #'
 #' @export
 bed_shuffle <- function(x, genome, incl = NULL, excl = NULL,
                         max_tries = 1000, within = FALSE, seed = 0) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
   # flatten incl and excl
   if (!is.null(incl))
@@ -37,7 +40,7 @@ bed_shuffle <- function(x, genome, incl = NULL, excl = NULL,
       excl <- bed_merge(excl)
 
   # make genome into an interval tbl
-  genome_incl <- mutate(genome, start = 1, end = size)
+  genome_incl <- mutate(genome, start = 0, end = size)
   genome_incl <- select(genome_incl, chrom, start, end)
 
   # find the included intervals bounds. case where only incl intervals are
@@ -51,17 +54,15 @@ bed_shuffle <- function(x, genome, incl = NULL, excl = NULL,
   }
 
   if (nrow(incl) == 0 || is.null(incl))
-    stop('no intervals to sample from', call. = FALSE)
+    stop("no intervals to sample from", call. = FALSE)
 
-  #shuffle_impl will drop all columns except chrom, start, and end
+  # drops all columns except chrom, start, and end
   res <- shuffle_impl(x, incl, within, max_tries, seed)
-  res <- as_data_frame(res)
 
-  # by default pass all original x column data to
-  # result (except chrom, start, end) which are shuffled
-  # see issue # 81 in github
-
+  # bind original x column data to result (#81)
   res <- bind_cols(res, x[, !colnames(x) %in% colnames(res)])
+
+  res <- tibble::as_tibble(res)
 
   res
 }

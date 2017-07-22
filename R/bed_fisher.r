@@ -1,6 +1,7 @@
-#' Fisher's test on number of shared and unique intervals.
+#' Fisher's test to measure overlap between two sets of intervals.
 #'
-#' Borrows from the `BEDtools` implementation.
+#' Calculate Fisher's test on number of intervals that are shared and unique
+#' between two sets of `x` and `y` intervals.
 #'
 #' @param x [tbl_interval()]
 #' @param y [tbl_interval()]
@@ -9,38 +10,26 @@
 #' @template stats
 #'
 #' @family interval statistics
+#'
 #' @seealso
 #'   \url{http://bedtools.readthedocs.org/en/latest/content/tools/fisher.html}
 #'
-#' @return `tbl_interval`
+#' @return [tbl_interval()]
 #'
 #' @examples
-#' x <- trbl_interval(
-#'   ~chrom, ~start, ~end,
-#'   "chr1", 10,     20,
-#'   "chr1", 30,     40,
-#'   "chr1", 51,     52
-#' )
+#' genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 #'
-#' y <- trbl_interval(
-#'   ~chrom, ~start, ~end,
-#'   "chr1", 15,     25,
-#'   "chr1", 51,     52
-#' )
-#'
-#' genome <- trbl_genome(
-#'   ~chrom, ~size,
-#'   "chr1", 500
-#' )
+#' x <- bed_random(genome, seed = 1010486)
+#' y <- bed_random(genome, seed = 9203911)
 #'
 #' bed_fisher(x, y, genome)
 #'
 #' @export
 bed_fisher <- function(x, y, genome) {
 
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
-  if (!is.tbl_interval(y)) y <- tbl_interval(y)
-  if (!is.tbl_genome(genome)) genome <- tbl_genome(genome)
+  if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
+  if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
+  if (!is.tbl_genome(genome)) genome <- as.tbl_genome(genome)
 
   # number of intervals
   n_x <- nrow(x)
@@ -66,7 +55,7 @@ bed_fisher <- function(x, y, genome) {
   # y, not x (`n21` in fisher.cpp)
   n_y_only <- max(0, n_y - n_i)
 
-  genome_size = sum(as.numeric(genome$size))
+  genome_size <- sum(as.numeric(genome$size))
 
   # estimated total intervals (`n22_full`)
   total_est <- round(max(n_i + n_x_only + n_y_only,
@@ -77,8 +66,8 @@ bed_fisher <- function(x, y, genome) {
 
   fisher_mat <- matrix(c(n_i, n_x_only, n_y_only, not_est),
                        nrow = 2,
-                       dimnames = list('in y?' = c('yes', 'no'),
-                                       'in x?' = c('yes', 'no')))
+                       dimnames = list("in y?" = c("yes", "no"),
+                                       "in x?" = c("yes", "no")))
 
   stat <- stats::fisher.test(fisher_mat)
   broom::tidy(stat)
@@ -92,4 +81,3 @@ interval_union <- function(x) {
 
   sum(res$.size)
 }
-

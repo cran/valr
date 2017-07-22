@@ -19,14 +19,14 @@ bed_projection(x, y, genome, by_chrom = FALSE)
 \code{\link[=tbl_interval]{tbl_interval()}} with the following columns:
 \itemize{
 \item \code{chrom} the name of chromosome tested if \code{by_chrom = TRUE},
-otherwise has a value of \code{'whole_genome'}
+otherwise has a value of \code{whole_genome}
 \item \code{p.value} p-value from a binomial test. p-values > 0.5
-will be reported as 1 - p-value and \code{lower_tail} will be \code{FALSE}
+are converted to \code{1 - p-value} and \code{lower_tail} is \code{FALSE}
 \item \code{obs_exp_ratio} ratio of observed to expected overlap frequency
-\item \code{lower_tail} a boolean column. \code{TRUE} indicates the observed overlaps
-is in the lower tail of the distribution (e.g., less overlap than expected); \code{FALSE}
-indicates that the observed overlaps are in the upper tail of the distribution
-(e.g., more overlap than expected)
+\item \code{lower_tail} \code{TRUE} indicates the observed overlaps are in the lower tail
+of the distribution (e.g., less overlap than expected). \code{FALSE} indicates
+that the observed overlaps are in the upper tail of the distribution (e.g.,
+more overlap than expected)
 }
 }
 \description{
@@ -39,32 +39,13 @@ statistics for subsets of data. See \code{vignette('interval-stats')} for
 examples.
 }
 \examples{
-genome <- trbl_genome(
- ~chrom, ~size,
- "chr1", 1e4,
- "chr2", 2e4,
- "chr3", 4e4
-)
+genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
-x <- trbl_interval(
- ~chrom, ~start, ~end,
- "chr1", 100,    200,
- "chr1", 250,    400,
- "chr1", 500,    600,
- "chr1", 1000,   2000,
- "chr2", 100,    200
-)
-
-y <- trbl_interval(
- ~chrom, ~start, ~end,
- "chr1", 150,    175,
- "chr1", 525,    575,
- "chr1", 1100,   1200,
- "chr1", 1400,   1600,
- "chr2", 200,    1500
-)
+x <- bed_random(genome, seed = 1010486)
+y <- bed_random(genome, seed = 9203911)
 
 bed_projection(x, y, genome)
+
 bed_projection(x, y, genome, by_chrom = TRUE)
 
 }

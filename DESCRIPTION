@@ -1,11 +1,10 @@
 Package: valr
 Type: Package
 Title: Genome Interval Arithmetic in R
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
     person('Jay', 'Hesselberth', role = c('aut', 'cre'), email = 'jay.hesselberth@gmail.com'),
-    person('Kent', 'Riemondy', role = c('aut'), email = 'kent.riemondy@ucdenver.edu'),
-    person('Ryan', 'Sheridan', role = c('ctb'), email = 'ryan.sheridan@ucdenver.edu')
+    person('Kent', 'Riemondy', role = c('aut'), email = 'kent.riemondy@ucdenver.edu')
     )
 Description: Read and manipulate genome intervals and signals. Provides
              functionality similar to command-line tool suites within R,
@@ -17,16 +16,16 @@ Imports: dplyr (>= 0.7.0), rlang, readr, stringr, tibble, broom,
 SystemRequirements: C++11
 LinkingTo: Rcpp (>= 0.12.8), BH,
 Suggests: knitr, rmarkdown, testthat, microbenchmark, covr, RMySQL,
-        purrr, tidyr,
+        purrr, tidyr, devtools, DT, cowplot, dbplyr, GenomicRanges,
+        IRanges, S4Vectors,
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-URL: http://github.com/rnabioco/valr/
+URL: http://github.com/rnabioco/valr, http://rnabioco.github.io/valr
 BugReports: https://github.com/rnabioco/valr/issues
 NeedsCompilation: yes
-Packaged: 2017-06-15 12:17:45 UTC; jayhesselberth
+Packaged: 2017-07-22 02:22:46 UTC; jayhesselberth
 Author: Jay Hesselberth [aut, cre],
-  Kent Riemondy [aut],
-  Ryan Sheridan [ctb]
+  Kent Riemondy [aut]
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Repository: CRAN
-Date/Publication: 2017-06-15 13:45:08 UTC
+Date/Publication: 2017-07-22 03:35:55 UTC
