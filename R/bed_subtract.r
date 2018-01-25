@@ -50,7 +50,6 @@
 #'
 #' @export
 bed_subtract <- function(x, y, any = FALSE) {
-
   if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
   if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
 
@@ -64,9 +63,9 @@ bed_subtract <- function(x, y, any = FALSE) {
 
   if (any) {
     # collect and return x intervals without overlaps
-    res <- bed_intersect(x, y)
-    colspec <- c("chrom", "start" = "start.x", "end" = "end.x")
-    anti <- anti_join(x, res, by = colspec)
+    res <- intersect_impl(x, y, invert = TRUE)
+    anti <- filter(res, is.na(.overlap))
+    anti <- select(anti, chrom, start = start.x, end = end.x)
 
     return(anti)
   }

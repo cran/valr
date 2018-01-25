@@ -18,9 +18,9 @@
 #'
 #' @export
 flip_strands <- function(x) {
-
-  if (! "strand" %in% colnames(x))
+  if (!"strand" %in% colnames(x)) {
     stop("`strand` column not found in `x`", call. = FALSE)
+  }
 
   if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
 
@@ -30,7 +30,7 @@ flip_strands <- function(x) {
 
   res <- mutate(res, .strand = ifelse(strand == "+", "-", "+"))
   res <- select(res, -strand)
-  res <- rename(res, strand = .strand)
+  res <- select(res, everything(), strand = .strand)
 
   res <- group_by(res, !!! groups_x)
   res

@@ -81,12 +81,11 @@ reorder_names <- function(x, y) {
 #' shared_groups(x, y)
 #' @noRd
 shared_groups <- function(x, y) {
-
   groups_x <- groups(x)
   groups_y <- groups(y)
 
   groups_xy <- intersect(groups_x, groups_y)
-  if (length(groups_xy) == 0){
+  if (length(groups_xy) == 0) {
     groups_xy <- NULL
   }
   groups_xy
@@ -94,8 +93,9 @@ shared_groups <- function(x, y) {
 
 # dplyr::check_suffix
 check_suffix <- function(suffix) {
-  if (!is.character(suffix) || length(suffix) != 2)
+  if (!is.character(suffix) || length(suffix) != 2) {
     stop("`suffix` must be a character vector of length 2.", call. = FALSE)
+  }
 }
 
 #' Return group labels from tbl_df

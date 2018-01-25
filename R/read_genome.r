@@ -61,19 +61,35 @@ read_genome <- function(path) {
 #'
 #' @export
 bound_intervals <- function(x, genome, trim = FALSE) {
-
   if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
 
   res <- left_join(x, genome, by = "chrom")
   if (trim) {
-    res <- mutate(res,
-                  start = ifelse(start < 0, 0, start),
-                  end = ifelse(end > size, size, end))
+    res <- mutate(
+      res,
+      start = ifelse(start < 0,
+        0,
+        pmin(start, size - 1)
+      ),
+      end = ifelse(end > size,
+        size,
+        pmax(1, end)
+      )
+    )
     res <- select(res, -size)
   } else {
-    res <- filter(res, start >= 0 & end <= size)
+    res <- filter(res, start >= 0 & start < size & end <= size & end > 0)
     res <- select(res, -size)
   }
+
+  if (any(res$start == res$end)) {
+    warning(paste0(
+      sum(res$start == res$end),
+      " intervals generated with same start and end were discarded"
+    ))
+  }
+
+  res <- res[res$start != res$end, ]
 
   res
 }

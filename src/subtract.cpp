@@ -15,6 +15,7 @@ void subtract_group(ivl_vector_t vx, ivl_vector_t vy,
 
   ivl_tree_t tree_y(vy) ;
   ivl_vector_t overlaps ;
+  IntervalStartSorter<int, int> ivl_sorter ;
 
   for (auto it : vx) {
 
@@ -33,6 +34,9 @@ void subtract_group(ivl_vector_t vx, ivl_vector_t vy,
       ends_out.push_back(it.stop) ;
       continue;
     }
+
+    // sort overlaps, as sort order not guaranteed
+    std::sort(overlaps.begin(), overlaps.end(), ivl_sorter) ;
 
     // iterate through overlaps with current x  interval
     // modifying start and stop as necessary
@@ -88,7 +92,7 @@ DataFrame subtract_impl(GroupedDataFrame gdf_x, GroupedDataFrame gdf_y) {
   GroupApply(gdf_x, gdf_y, subtract_group, std::ref(indices_out), std::ref(starts_out), std::ref(ends_out));
 
   // extract out x data, new intervals will be generated as copies of the parent interval
-  DataFrame out = DataFrameSubsetVisitors(df_x, names(df_x)).subset(indices_out, "data.frame");
+  DataFrame out = DataFrameSubsetVisitors(df_x, df_x.names()).subset(indices_out, "data.frame");
 
   // assign new starts and ends
   out["start"] = starts_out ;

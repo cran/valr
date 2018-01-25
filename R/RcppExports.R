@@ -25,8 +25,8 @@ flank_impl <- function(df, genome, both = 0, left = 0, right = 0, fraction = FAL
     .Call(`_valr_flank_impl`, df, genome, both, left, right, fraction, stranded, trim)
 }
 
-intersect_impl <- function(x, y, suffix_x = ".x", suffix_y = ".y") {
-    .Call(`_valr_intersect_impl`, x, y, suffix_x, suffix_y)
+intersect_impl <- function(x, y, invert = FALSE, suffix_x = ".x", suffix_y = ".y") {
+    .Call(`_valr_intersect_impl`, x, y, invert, suffix_x, suffix_y)
 }
 
 makewindows_impl <- function(df, win_size = 0L, num_win = 0L, step_size = 0L, reverse = FALSE) {
@@ -37,8 +37,8 @@ merge_impl <- function(gdf, max_dist = 0L, collapse = TRUE) {
     .Call(`_valr_merge_impl`, gdf, max_dist, collapse)
 }
 
-random_impl <- function(genome, length, n, seed = 0L, col_chrom = "chrom", col_size = "size") {
-    .Call(`_valr_random_impl`, genome, length, n, seed, col_chrom, col_size)
+random_impl <- function(genome, length, n, seed = 0L) {
+    .Call(`_valr_random_impl`, genome, length, n, seed)
 }
 
 shuffle_impl <- function(df, incl, within = FALSE, max_tries = 1000L, seed = 0L) {

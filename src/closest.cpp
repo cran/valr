@@ -35,16 +35,16 @@ void closest_grouped(ivl_vector_t& vx, ivl_vector_t& vy,
         indices_y.push_back(ov_it.value) ;
         overlap_sizes.push_back(overlap < 0 ? -overlap : overlap) ;
         distance_sizes.push_back(0);
-      } else if (ov_it.start > vx_it.stop) {
+      } else if (ov_it.start >= vx_it.stop) {
         indices_x.push_back(vx_it.value) ;
         indices_y.push_back(ov_it.value) ;
         overlap_sizes.push_back(0) ;
-        distance_sizes.push_back(-overlap);
+        distance_sizes.push_back(-(overlap - 1));
       } else {
         indices_x.push_back(vx_it.value) ;
         indices_y.push_back(ov_it.value) ;
         overlap_sizes.push_back(0) ;
-        distance_sizes.push_back(overlap);
+        distance_sizes.push_back(overlap - 1);
       }
 
     }
@@ -75,8 +75,8 @@ DataFrame closest_impl(GroupedDataFrame x, GroupedDataFrame y,
   GroupApply(x, y, closest_grouped, std::ref(indices_x), std::ref(indices_y),
              std::ref(overlap_sizes), std::ref(distance_sizes));
 
-  DataFrame subset_x = DataFrameSubsetVisitors(df_x, names(df_x)).subset(indices_x, "data.frame");
-  DataFrame subset_y = DataFrameSubsetVisitors(df_y, names(df_y)).subset(indices_y, "data.frame");
+  DataFrame subset_x = DataFrameSubsetVisitors(df_x, df_x.names()).subset(indices_x, "data.frame");
+  DataFrame subset_y = DataFrameSubsetVisitors(df_y, df_y.names()).subset(indices_y, "data.frame");
 
   DataFrameBuilder out;
   // x names, data

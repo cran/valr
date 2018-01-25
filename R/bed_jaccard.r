@@ -1,7 +1,8 @@
 #' Calculate the Jaccard statistic for two sets of intervals.
 #'
 #' Quantifies the extent of overlap between to sets of intervals in terms of
-#' base-pairs.
+#' base-pairs. Groups that are shared between input are used to calculate the statistic
+#' for subsets of data.
 #'
 #' @details The Jaccard statistic takes values of `[0,1]` and is measured as:
 #'
@@ -19,11 +20,14 @@
 #' @family interval statistics
 #'
 #' @return
-#' [tbl_interval()] with the following columns:
-#'   - `len_i` length of the intersection
-#'   - `len_u` length of the union
-#'   - `jaccard` jaccard statistic
+#' tibble with the following columns:
+#'
+#'   - `len_i` length of the intersection in base-pairs
+#'   - `len_u` length of the union in base-pairs
+#'   - `jaccard` value of jaccard statistic
 #'   - `n_int` number of intersecting intervals between `x` and `y`
+#'
+#' If inputs are grouped, the return value will contain one set of values per group.
 #'
 #' @seealso
 #'   \url{http://bedtools.readthedocs.org/en/latest/content/tools/jaccard.html}
@@ -36,19 +40,34 @@
 #'
 #' bed_jaccard(x, y)
 #'
+#' # calculate jaccard per chromosome
+#' bed_jaccard(dplyr::group_by(x, chrom),
+#'             dplyr::group_by(y, chrom))
+#'
 #' @export
 bed_jaccard <- function(x, y) {
-
   if (!is.tbl_interval(x)) x <- as.tbl_interval(x)
   if (!is.tbl_interval(y)) y <- as.tbl_interval(y)
+
+  groups_shared <- shared_groups(x, y)
 
   x <- bed_merge(x)
   y <- bed_merge(y)
 
   res_intersect <- bed_intersect(x, y)
-  res_intersect <- summarize(res_intersect,
-                             sum_overlap = sum(as.numeric(.overlap)),
-                             n_int = as.numeric(n()))
+
+  if (!is.null(groups_shared)) {
+    x <- group_by(x, !!! syms(groups_shared))
+    y <- group_by(y, !!! syms(groups_shared))
+
+    res_intersect <- group_by(res_intersect, !!! syms(groups_shared))
+  }
+
+  res_intersect <- summarize(
+    res_intersect,
+    sum_overlap = sum(as.numeric(.overlap)),
+    n_int = as.numeric(n())
+  )
 
   res_x <- mutate(x, .size = end - start)
   res_x <- summarize(res_x, sum_x = sum(as.numeric(.size)))
@@ -56,20 +75,35 @@ bed_jaccard <- function(x, y) {
   res_y <- mutate(y, .size = end - start)
   res_y <- summarize(res_y, sum_y = sum(as.numeric(.size)))
 
-  n_i <- res_intersect$sum_overlap
-  n <- res_intersect$n_int
+  if (!is.null(groups_shared)) {
+    res <- left_join(res_intersect, res_x, by = as.character(groups_shared))
+    res <- left_join(res, res_y, by = as.character(groups_shared))
 
-  n_x <- res_x$sum_x
-  n_y <- res_y$sum_y
+    res <- mutate(res, sum_xy = sum_x + sum_y)
+    group_cols <- select(res, !!! syms(groups_shared))
 
-  n_u <- n_x + n_y
+    res <- transmute(
+      res,
+      len_i = sum_overlap,
+      len_u = sum_xy,
+      jaccard = sum_overlap / (sum_xy - sum_overlap),
+      n = n_int
+    )
 
-  jaccard <- n_i / (n_u - n_i)
+    res <- bind_cols(group_cols, res)
+  } else {
+    n_i <- res_intersect$sum_overlap
+    n_u <- res_x$sum_x + res_y$sum_y
 
-  res <- tibble::tribble(
-    ~len_i, ~len_u, ~jaccard, ~n,
-    n_i,    n_u,    jaccard,  n
-  )
+    jaccard <- n_i / (n_u - n_i)
+
+    res <- tibble(
+      len_i = n_i,
+      len_u = n_u,
+      jaccard = jaccard,
+      n = res_intersect$n_int
+    )
+  }
 
   res
 }

@@ -104,7 +104,7 @@ DataFrame dist_impl(GroupedDataFrame x, GroupedDataFrame y, std::string distcalc
   DataFrame df_x = x.data() ;
   GroupApply(x, y, dist_grouped, std::ref(indices_x), std::ref(distances), std::ref(distcalc));
 
-  DataFrame subset_x = DataFrameSubsetVisitors(df_x, names(df_x)).subset(indices_x, "data.frame");
+  DataFrame subset_x = DataFrameSubsetVisitors(df_x, df_x.names()).subset(indices_x, "data.frame");
 
   DataFrameBuilder out;
   // x names, data
@@ -129,7 +129,6 @@ library(dplyr)
       "chr2", 1000,   2000,
       "chr3", 3000, 4000
   ) %>% group_by(chrom)
-
   y <- tibble::frame_data(
       ~chrom, ~start, ~end,
       "chr1", 25,    125,
@@ -138,10 +137,7 @@ library(dplyr)
       "chr2", 1,   1000,
       "chr2", 2000, 3000
   ) %>% group_by(chrom)
-
-
   devtools::load_all()
-
- dist_impl(x, y, distcalc = "absdist")
- dist_impl(x, y, distcalc = "reldist")
-*/
+  dist_impl(x, y, distcalc = "absdist")
+  dist_impl(x, y, distcalc = "reldist")
+  */

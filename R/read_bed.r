@@ -28,12 +28,14 @@
 #' @export
 read_bed <- function(filename, n_fields = 3, col_types = bed12_coltypes,
                      sort = TRUE, ...) {
-
   coltypes <- col_types[1:n_fields]
   colnames <- names(coltypes)
 
-  bed_raw <- readr::read_tsv(filename, col_names = colnames,
-                             col_types = coltypes, ...)
+  bed_raw <- readr::read_tsv(
+    filename,
+    col_names = colnames,
+    col_types = coltypes, ...
+  )
   out <- as.tbl_interval(bed_raw)
 
   if (sort) out <- bed_sort(out)
@@ -67,7 +69,7 @@ read_bed12 <- function(filename, ...) {
 read_bedgraph <- function(filename, ...) {
   # load as bed4, rename `value` column and covert to double
   out <- read_bed(filename, n_fields = 4, sort = FALSE)
-  out <- rename(out, value = name)
+  out <- select(out, everything(), value = name)
   out <- mutate(out, value = as.double(value))
   out
 }
@@ -83,8 +85,11 @@ read_bedgraph <- function(filename, ...) {
 #' @export
 read_narrowpeak <- function(filename, ...) {
   colnames <- names(peak_coltypes)
-  out <- readr::read_tsv(filename, col_types = peak_coltypes,
-                         col_names = colnames)
+  out <- readr::read_tsv(
+    filename,
+    col_types = peak_coltypes,
+    col_names = colnames
+  )
   out <- as.tbl_interval(out)
   out
 }

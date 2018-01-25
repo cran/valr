@@ -26,7 +26,7 @@ test_that("all ends are less or equal to than chrom size", {
 
 test_that("chrom sizes less than length throws an error", {
   genome <- tibble::tribble(
-    ~chrom, ~size,
+    ~ chrom, ~ size,
     "chr1", 125
   )
   expect_error(bed_random(genome, seed = seed))
@@ -38,6 +38,7 @@ test_that("intervals are sorted by default", {
   expect_false(all(x == y))
 
   # default sort
-  x_sort <- x %>% arrange(chrom, start)
+  x_sort <- x %>%
+    arrange(chrom, start)
   expect_true(all(x == x_sort))
 })

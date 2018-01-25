@@ -1,3 +1,27 @@
+# valr 0.4.0
+
+## Minor changes
+
+* All relevant tests from bedtool2 were ported into valr. Bugs identified in corner cases by new tests were fixed (#328 @raysinesis)
+
+* `bed_jaccard()` now works with grouped inputs (#216)
+
+* Update dplyr header files to v0.7
+
+* `bed_intersect()` and internal `intersect_impl` were refactored to enable return of non-intersecting intervals.
+
+* The genome argument to `bed_makewindows()` was deprecated and will produce a warning if used. Also error handling was added to check and warn if there are intervals smaller than the requested window size in `makewindows_impl()` (#312 @kriemo)
+
+## Bug fixes
+
+* Fixed off by one error in reported distances from `bed_closest()`. Distances reported now are the same as `bedtools closest` behavior (#311).
+
+* `bed_glyph()` accepts `trbl_intervals` named other than `x` and `y` (#318).
+
+* `bed_makewindows()` now returns the number of windows specified by `num_win` when the input intervals are not evenly divisble into `num_win`, consistent with `bedtools` behavior.
+
+* The output of `findOverlaps()` is now sorted in `subtract_impl()` to prevent reporting intervals that should have been dropped when calling `bed_subtract()` (#316 @kriemo)
+
 # valr 0.3.1
 
 ## Enhancements
@@ -10,7 +34,7 @@
 
 * Improve documentation of interval statistics with more complex examples.
 
-## Minor
+## Minor changes
 
 * `bed_sort()` has been de-deprecated to reduce `arrange` calls in library code.
 
