@@ -2,7 +2,6 @@
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "img/overview-",
   fig.align = "center"
 )
 
