@@ -1,3 +1,9 @@
+# valr 0.4.2
+
+## Bug fixes
+
+* Changed the behavior of `as.tbl_interval()` to call `as_tibble()` only on non-tibble input, which prevents groups from being stripped from `tibble()` input (#338).
+
 # valr 0.4.1
 
 * Added new function, `bed_partition()`, which is similar to `bed_merge()` but collapses intervals to elemental intervals rather than the maximal overlapping region. `bed_partition()` also can compute summaries of data from overlapping intervals. See examples in `bed_partition()` and timings in `vignette('benchmarks')` @kriemo.
