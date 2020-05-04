@@ -7,14 +7,14 @@
 bed_reldist(x, y, detail = FALSE)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 
-\item{y}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{y}{\link{ivl_df}}
 
 \item{detail}{report relative distances for each \code{x} interval.}
 }
 \value{
-If \code{detail = FALSE}, a \code{\link[=tbl_interval]{tbl_interval()}} that summarizes
+If \code{detail = FALSE}, a \link{ivl_df} that summarizes
 calculated \code{.reldist} values with the following columns:
 \itemize{
 \item \code{.reldist} relative distance metric
@@ -49,8 +49,10 @@ bed_reldist(x, y, detail = TRUE)
 \seealso{
 \url{http://bedtools.readthedocs.io/en/latest/content/tools/reldist.html}
 
-Other interval statistics: \code{\link{bed_absdist}},
-  \code{\link{bed_fisher}}, \code{\link{bed_jaccard}},
-  \code{\link{bed_projection}}
+Other interval statistics: 
+\code{\link{bed_absdist}()},
+\code{\link{bed_fisher}()},
+\code{\link{bed_jaccard}()},
+\code{\link{bed_projection}()}
 }
 \concept{interval statistics}

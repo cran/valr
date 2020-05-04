@@ -4,13 +4,22 @@
 \alias{bed_slop}
 \title{Increase the size of input intervals.}
 \usage{
-bed_slop(x, genome, both = 0, left = 0, right = 0,
-  fraction = FALSE, strand = FALSE, trim = FALSE, ...)
+bed_slop(
+  x,
+  genome,
+  both = 0,
+  left = 0,
+  right = 0,
+  fraction = FALSE,
+  strand = FALSE,
+  trim = FALSE,
+  ...
+)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 
-\item{genome}{\code{\link[=tbl_genome]{tbl_genome()}}}
+\item{genome}{\link{genome_df}}
 
 \item{both}{number of bases on both sizes}
 
@@ -27,31 +36,31 @@ bed_slop(x, genome, both = 0, left = 0, right = 0,
 \item{...}{extra arguments (not used)}
 }
 \value{
-\code{\link[=tbl_interval]{tbl_interval()}}
+\link{ivl_df}
 }
 \description{
 Increase the size of input intervals.
 }
 \examples{
-x <- trbl_interval(
+x <- tibble::tribble(
   ~chrom, ~start, ~end,
   'chr1', 110,    120,
   'chr1', 225,    235
 )
 
-genome <- trbl_genome(
+genome <- tibble::tribble(
   ~chrom, ~size,
   'chr1', 400
 )
 
 bed_glyph(bed_slop(x, genome, both = 20, trim = TRUE))
 
-genome <- trbl_genome(
+genome <- tibble::tribble(
  ~chrom, ~size,
  "chr1", 5000
 )
 
-x <- trbl_interval(
+x <- tibble::tribble(
  ~chrom, ~start, ~end, ~name, ~score, ~strand,
  "chr1", 500,    1000, '.',   '.',     '+',
  "chr1", 1000,   1500, '.',   '.',     '-'
@@ -69,9 +78,12 @@ bed_slop(x, genome, both = 0.5, fraction = TRUE)
 \seealso{
 \url{http://bedtools.readthedocs.org/en/latest/content/tools/slop.html}
 
-Other single set operations: \code{\link{bed_cluster}},
-  \code{\link{bed_complement}}, \code{\link{bed_flank}},
-  \code{\link{bed_merge}}, \code{\link{bed_partition}},
-  \code{\link{bed_shift}}
+Other single set operations: 
+\code{\link{bed_cluster}()},
+\code{\link{bed_complement}()},
+\code{\link{bed_flank}()},
+\code{\link{bed_merge}()},
+\code{\link{bed_partition}()},
+\code{\link{bed_shift}()}
 }
 \concept{single set operations}

@@ -7,14 +7,14 @@
 bed_fisher(x, y, genome)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 
-\item{y}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{y}{\link{ivl_df}}
 
-\item{genome}{\code{\link[=tbl_genome]{tbl_genome()}}}
+\item{genome}{\link{genome_df}}
 }
 \value{
-\code{\link[=tbl_interval]{tbl_interval()}}
+\link{ivl_df}
 }
 \description{
 Calculate Fisher's test on number of intervals that are shared and unique
@@ -29,8 +29,8 @@ examples.
 \examples{
 genome <- read_genome(valr_example('hg19.chrom.sizes.gz'))
 
-x <- bed_random(genome, seed = 1010486)
-y <- bed_random(genome, seed = 9203911)
+x <- bed_random(genome, n = 1e4, seed = 1010486)
+y <- bed_random(genome, n = 1e4, seed = 9203911)
 
 bed_fisher(x, y, genome)
 
@@ -38,8 +38,10 @@ bed_fisher(x, y, genome)
 \seealso{
 \url{http://bedtools.readthedocs.org/en/latest/content/tools/fisher.html}
 
-Other interval statistics: \code{\link{bed_absdist}},
-  \code{\link{bed_jaccard}}, \code{\link{bed_projection}},
-  \code{\link{bed_reldist}}
+Other interval statistics: 
+\code{\link{bed_absdist}()},
+\code{\link{bed_jaccard}()},
+\code{\link{bed_projection}()},
+\code{\link{bed_reldist}()}
 }
 \concept{interval statistics}

@@ -11,7 +11,7 @@ read_genome(path)
 tab-delimited}
 }
 \value{
-\code{\link[=tbl_genome]{tbl_genome()}}, sorted by \code{size}
+\link{genome_df}, sorted by \code{size}
 }
 \description{
 Genome files (UCSC "chromSize" files) contain chromosome name and size
@@ -31,7 +31,8 @@ read_genome('https://genome.ucsc.edu/goldenpath/help/hg19.chrom.sizes')
 
 }
 \seealso{
-Other read functions: \code{\link{read_bed}},
-  \code{\link{read_vcf}}
+Other read functions: 
+\code{\link{read_bed}()},
+\code{\link{read_vcf}()}
 }
 \concept{read functions}

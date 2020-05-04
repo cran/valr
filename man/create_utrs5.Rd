@@ -7,7 +7,7 @@
 create_utrs5(x)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}} in BED12 format}
+\item{x}{\link{ivl_df} in BED12 format}
 }
 \description{
 Create 5' UTR features.
@@ -19,7 +19,9 @@ create_utrs5(x)
 
 }
 \seealso{
-Other feature functions: \code{\link{create_introns}},
-  \code{\link{create_tss}}, \code{\link{create_utrs3}}
+Other feature functions: 
+\code{\link{create_introns}()},
+\code{\link{create_tss}()},
+\code{\link{create_utrs3}()}
 }
 \concept{feature functions}

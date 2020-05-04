@@ -7,7 +7,7 @@
 bed12_to_exons(x)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 }
 \description{
 After conversion to BED6 format, the \code{score} column contains the exon
@@ -21,9 +21,10 @@ bed12_to_exons(x)
 
 }
 \seealso{
-Other utilities: \code{\link{bed_makewindows}},
-  \code{\link{bound_intervals}},
-  \code{\link{flip_strands}},
-  \code{\link{interval_spacing}}
+Other utilities: 
+\code{\link{bed_makewindows}()},
+\code{\link{bound_intervals}()},
+\code{\link{flip_strands}()},
+\code{\link{interval_spacing}()}
 }
 \concept{utilities}

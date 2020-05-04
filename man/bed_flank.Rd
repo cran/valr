@@ -4,13 +4,22 @@
 \alias{bed_flank}
 \title{Create flanking intervals from input intervals.}
 \usage{
-bed_flank(x, genome, both = 0, left = 0, right = 0,
-  fraction = FALSE, strand = FALSE, trim = FALSE, ...)
+bed_flank(
+  x,
+  genome,
+  both = 0,
+  left = 0,
+  right = 0,
+  fraction = FALSE,
+  strand = FALSE,
+  trim = FALSE,
+  ...
+)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 
-\item{genome}{\code{\link[=tbl_genome]{tbl_genome()}}}
+\item{genome}{\link{genome_df}}
 
 \item{both}{number of bases on both sizes}
 
@@ -27,32 +36,32 @@ bed_flank(x, genome, both = 0, left = 0, right = 0,
 \item{...}{extra arguments (not used)}
 }
 \value{
-\code{\link[=tbl_interval]{tbl_interval()}}
+\link{ivl_df}
 }
 \description{
 Create flanking intervals from input intervals.
 }
 \examples{
-x <- trbl_interval(
+x <- tibble::tribble(
   ~chrom, ~start, ~end,
   'chr1',      25,      50,
   'chr1',      100,     125
 )
 
-genome <- trbl_genome(
+genome <- tibble::tribble(
   ~chrom, ~size,
   'chr1', 130
 )
 
 bed_glyph(bed_flank(x, genome, both = 20))
 
-x <- trbl_interval(
+x <- tibble::tribble(
  ~chrom, ~start, ~end, ~name, ~score, ~strand,
  'chr1', 500,    1000, '.',   '.',    '+',
  'chr1', 1000,   1500, '.',   '.',    '-'
 )
 
-genome <- trbl_genome(
+genome <- tibble::tribble(
   ~chrom, ~size,
   'chr1', 5000
 )
@@ -69,9 +78,12 @@ bed_flank(x, genome, both = 0.5, fraction = TRUE)
 \seealso{
 \url{http://bedtools.readthedocs.org/en/latest/content/tools/flank.html}
 
-Other single set operations: \code{\link{bed_cluster}},
-  \code{\link{bed_complement}}, \code{\link{bed_merge}},
-  \code{\link{bed_partition}}, \code{\link{bed_shift}},
-  \code{\link{bed_slop}}
+Other single set operations: 
+\code{\link{bed_cluster}()},
+\code{\link{bed_complement}()},
+\code{\link{bed_merge}()},
+\code{\link{bed_partition}()},
+\code{\link{bed_shift}()},
+\code{\link{bed_slop}()}
 }
 \concept{single set operations}

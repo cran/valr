@@ -1,6 +1,6 @@
 #' Sort a set of intervals.
 #'
-#' @param x [tbl_interval()]
+#' @param x [ivl_df]
 #' @param by_size sort by interval size
 #' @param by_chrom sort within chromosome
 #' @param reverse reverse sort order
@@ -9,7 +9,7 @@
 #' \url{http://bedtools.readthedocs.org/en/latest/content/tools/sort.html}
 #'
 #' @examples
-#' x <- trbl_interval(
+#' x <- tibble::tribble(
 #'    ~chrom, ~start, ~end,
 #'    "chr8", 500,    1000,
 #'    "chr8", 1000,   5000,
@@ -35,46 +35,37 @@
 #'
 #' @export
 bed_sort <- function(x, by_size = FALSE, by_chrom = FALSE, reverse = FALSE) {
-  if (!is.tbl_interval(x)) x <- tbl_interval(x)
+  x <- check_interval(x)
 
   if (by_size) {
     res <- mutate(x, .size = end - start)
 
     if (by_chrom) {
       if (reverse) {
-        res <- arrange(res, chrom, desc(.size))
+        res <- res[order(res$chrom, -res$.size, method = "radix"), ]
       } else {
-        res <- arrange(res, chrom, .size)
+        res <- res[order(res$chrom, res$.size, method = "radix"), ]
       }
     } else {
       if (reverse) {
-        res <- arrange(res, desc(.size))
+        res <- res[order(-res$.size, method = "radix"), ]
       } else {
-        res <- arrange(res, .size)
+        res <- res[order(res$.size, method = "radix"), ]
       }
     }
-
-
 
     # remove .size column and groups in result
     res <- select(res, -.size)
   } else {
-    if (by_chrom) {
-      res <- group_by(x, chrom)
-    }
-
     # sort by coordinate
     if (reverse) {
-      res <- arrange(x, chrom, desc(start))
+      res <- x[order(x$chrom, -x$start,
+                       method = "radix"), ]
     } else {
-      res <- arrange(x, chrom, start, end)
+      res <- x[order(x$chrom, x$start, x$end,
+                       method = "radix"), ]
     }
   }
-
-  # add `sorted` attribute
-  attr(res, "sorted") <- TRUE
-
-  res <- as.tbl_interval(res)
 
   res
 }

@@ -7,17 +7,17 @@
 interval_spacing(x)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 }
 \value{
-\code{\link[=tbl_interval]{tbl_interval()}} with \code{.spacing} column.
+\link{ivl_df} with \code{.spacing} column.
 }
 \description{
 Spacing for the first interval of each chromosome is undefined (\code{NA}). The
 leading interval of an overlapping interval pair has a negative value.
 }
 \examples{
-x <- trbl_interval(
+x <- tibble::tribble(
   ~chrom, ~start, ~end,
   'chr1', 1,      100,
   'chr1', 150,    200,
@@ -28,8 +28,10 @@ interval_spacing(x)
 
 }
 \seealso{
-Other utilities: \code{\link{bed12_to_exons}},
-  \code{\link{bed_makewindows}},
-  \code{\link{bound_intervals}}, \code{\link{flip_strands}}
+Other utilities: 
+\code{\link{bed12_to_exons}()},
+\code{\link{bed_makewindows}()},
+\code{\link{bound_intervals}()},
+\code{\link{flip_strands}()}
 }
 \concept{utilities}

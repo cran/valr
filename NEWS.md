@@ -1,3 +1,29 @@
+# valr 0.6.0
+
+## Major changes
+
+* `trbl_interval()` and `trbl_genome()` custom `tibble` subclasses have been deemed unnecessary and have been removed from the package. 
+
+* coercing `GRanges` to a `valr` compatible data.frame now uses the `gr_to_bed()` function rather than `as.trbl_interal()` methods. 
+
+## Minor changes
+
+* dplyr version < 0.8.0 is no longer supported due to unnecessary code bloat and challenges with handling multiple grouping structures (#359).
+
+* The `sort_by` argument of `bed_random()` has been changed to `sorted`, and will now by default
+use `bed_sort()` to sort the output, rather than rely on naming the sorting columns. Sorting can
+be suppressed by using `sorted = FALSE`. 
+
+* `bed_sort()` now uses base R sorting with the `radix` method for increased speed. (#353)
+
+* `tbls` processed by `bed_merge()`or `bed_sort()` no longer store either `merged` or `sorted` as attributes, due to these attributes being rarely checked in the codebase and potential sources of unexpected behavior.
+
+## Bug fixes
+
+* Fixed `bed_closest()` to prevent erroneous intervals being reported when adjacent closest intervals are present in the `y` table. (#348)
+
+* Factor columns that are not used for grouping are returned as factors rather than inappropriately being coerced to integer vectors (#360)
+
 # valr 0.5.0
 
 ## Major changes 
@@ -72,7 +98,7 @@
 
 * New `create_introns()`, `create_utrs5()` and `create_utrs3()` functions for generating features from BED12 files.
 
-* Speed-ups in `bed_makewindows()` (~50x), `bed_merge()` (~4x), and `bed_flank()` (~4x) (thanks to @kriemo and @sheridar). Thanks to the sponsors of the [Biofrontiers Hackathon](https://hackathon.colorado.edu/) for the caffeine underlying these improvements.
+* Speed-ups in `bed_makewindows()` (~50x), `bed_merge()` (~4x), and `bed_flank()` (~4x) (thanks to @kriemo and @sheridar). Thanks to the sponsors of the Biofrontiers Hackathon for the caffeine underlying these improvements.
 
 ## Bug fixes
 

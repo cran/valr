@@ -4,31 +4,30 @@
 \alias{bed_random}
 \title{Generate randomly placed intervals on a genome.}
 \usage{
-bed_random(genome, length = 1000, n = 1e+06, sort_by = c("chrom",
-  "start"), seed = 0)
+bed_random(genome, length = 1000, n = 1e+06, seed = 0, sorted = TRUE)
 }
 \arguments{
-\item{genome}{\code{\link[=tbl_genome]{tbl_genome()}}}
+\item{genome}{\link{genome_df}}
 
 \item{length}{length of intervals}
 
 \item{n}{number of intervals to generate}
 
-\item{sort_by}{sorting variables}
-
 \item{seed}{seed RNG for reproducible intervals}
+
+\item{sorted}{return sorted output}
 }
 \value{
-\code{\link[=tbl_interval]{tbl_interval()}}
+\link{ivl_df}
 }
 \description{
 Generate randomly placed intervals on a genome.
 }
 \details{
-Sorting can be suppressed with \code{sort_by = NULL}.
+Sorting can be suppressed with \code{sorted = FALSE}.
 }
 \examples{
-genome <- trbl_genome(
+genome <- tibble::tribble(
   ~chrom,  ~size,
   "chr1",  10000000,
   "chr2",  50000000,
@@ -39,7 +38,7 @@ genome <- trbl_genome(
 bed_random(genome, seed = 10104)
 
 # sorting can be suppressed
-bed_random(genome, sort_by = NULL, seed = 10104)
+bed_random(genome, sorted = FALSE, seed = 10104)
 
 # 500 random intervals of length 500
 bed_random(genome, length = 500, n = 500, seed = 10104)
@@ -48,6 +47,7 @@ bed_random(genome, length = 500, n = 500, seed = 10104)
 \seealso{
 \url{http://bedtools.readthedocs.org/en/latest/content/tools/random.html}
 
-Other randomizing operations: \code{\link{bed_shuffle}}
+Other randomizing operations: 
+\code{\link{bed_shuffle}()}
 }
 \concept{randomizing operations}

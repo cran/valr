@@ -7,7 +7,7 @@
 create_introns(x)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}} in BED12 format}
+\item{x}{\link{ivl_df} in BED12 format}
 }
 \description{
 Numbers in the \code{score} column are intron numbers from 5' to 3' independent of
@@ -21,7 +21,9 @@ create_introns(x)
 
 }
 \seealso{
-Other feature functions: \code{\link{create_tss}},
-  \code{\link{create_utrs3}}, \code{\link{create_utrs5}}
+Other feature functions: 
+\code{\link{create_tss}()},
+\code{\link{create_utrs3}()},
+\code{\link{create_utrs5}()}
 }
 \concept{feature functions}

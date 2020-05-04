@@ -1,17 +1,17 @@
-## ----knitr_opts, echo = FALSE--------------------------------------------
+## ----knitr_opts, echo = FALSE-------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.align = "center"
 )
 
-## ----init, echo = FALSE, message = FALSE---------------------------------
+## ----init, echo = FALSE, message = FALSE--------------------------------------
 library(valr)
 library(dplyr)
 library(ggplot2)
 library(tibble)
 
-## ----syntax_demo, message = FALSE----------------------------------------
+## ----syntax_demo, message = FALSE---------------------------------------------
 library(valr)
 library(dplyr)
 
@@ -27,12 +27,12 @@ nearby %>%
   select(starts_with('name'), .overlap, .dist) %>%
   filter(abs(.dist) < 1000)
 
-## ----file_io-------------------------------------------------------------
+## ----file_io------------------------------------------------------------------
 bed_file <- valr_example("3fields.bed.gz")
 read_bed(bed_file) # accepts filepaths or URLs
 
-## ----trbl_ivls-----------------------------------------------------------
-bed <- trbl_interval(
+## ----trbl_ivls----------------------------------------------------------------
+bed <- tribble(
   ~chrom, ~start,  ~end, 
   "chr1", 1657492, 2657492, 
   "chr2", 2501324, 3094650
@@ -40,9 +40,9 @@ bed <- trbl_interval(
 
 bed
 
-## ----zero-based----------------------------------------------------------
+## ----zero-based---------------------------------------------------------------
 # a chromosome 100 basepairs in length
-chrom <- trbl_interval(
+chrom <- tribble(
   ~chrom, ~start, ~end, 
   "chr1", 0,      100
 )
@@ -50,7 +50,7 @@ chrom <- trbl_interval(
 chrom
 
 # single basepair intervals
-bases <- trbl_interval(
+bases <- tribble(
   ~chrom, ~start, ~end, 
   "chr1", 0,      1, # first base of chromosome
   "chr1", 1,      2,  # second base of chromosome
@@ -59,29 +59,29 @@ bases <- trbl_interval(
 
 bases
 
-## ----db, warning = FALSE, eval = FALSE-----------------------------------
+## ----db, warning = FALSE, eval = FALSE----------------------------------------
 #  # access the `refGene` tbl on the `hg38` assembly.
 #  if(require(RMySQL)) {
 #    ucsc <- db_ucsc('hg38')
 #    tbl(ucsc, 'refGene')
 #  }
 
-## ----intersect_glyph-----------------------------------------------------
-x <- tibble::tribble(
+## ----intersect_glyph----------------------------------------------------------
+x <- tribble(
   ~chrom, ~start, ~end,
   'chr1', 25,     50,
   'chr1', 100,    125
 )
 
-y <- tibble::tribble(
+y <- tribble(
   ~chrom, ~start, ~end,
   'chr1', 30,     75
 )
 
 bed_glyph(bed_intersect(x, y))
 
-## ----merge_glyph---------------------------------------------------------
-x <- tibble::tribble(
+## ----merge_glyph--------------------------------------------------------------
+x <- tribble(
   ~chrom, ~start, ~end,
   'chr1',      1,      50,
   'chr1',      10,     75,
@@ -90,15 +90,15 @@ x <- tibble::tribble(
 
 bed_glyph(bed_merge(x))
 
-## ----strand--------------------------------------------------------------
-x <- tibble::tribble(
+## ----strand-------------------------------------------------------------------
+x <- tribble(
   ~chrom, ~start, ~end, ~strand,
   'chr1', 1,      100,  '+',
   'chr1', 50,     150,  '+',
   'chr2', 100,    200,  '-'
 )
 
-y <- tibble::tribble(
+y <- tribble(
   ~chrom, ~start, ~end, ~strand,
   'chr1', 50,     125,  '+',
   'chr1', 50,     150,  '-',
@@ -111,7 +111,7 @@ y <- group_by(y, strand)
 
 bed_intersect(x, y)
 
-## ----strand_opp----------------------------------------------------------
+## ----strand_opp---------------------------------------------------------------
 x <- group_by(x, strand)
 
 y <- flip_strands(y)
@@ -119,14 +119,14 @@ y <- group_by(y, strand)
 
 bed_intersect(x, y)
 
-## ----NSE, eval = FALSE---------------------------------------------------
+## ----NSE, eval = FALSE--------------------------------------------------------
 #  # calculate the mean and variance for a `value` column
 #  bed_map(a, b, .mean = mean(value), .var = var(value))
 #  
 #  # report concatenated and max values for merged intervals
 #  bed_merge(a, .concat = concat(value), .max = max(value))
 
-## ----demo-tss, warning = FALSE, message = FALSE--------------------------
+## ----demo-tss, warning = FALSE, message = FALSE-------------------------------
 # `valr_example()` identifies the path of example files
 bedfile <- valr_example('genes.hg19.chr22.bed.gz')
 genomefile <- valr_example('hg19.chrom.sizes.gz')
@@ -136,7 +136,7 @@ genes <- read_bed(bedfile, n_fields = 6)
 genome <- read_genome(genomefile)
 y <- read_bedgraph(bgfile)
 
-## ----tss-----------------------------------------------------------------
+## ----tss----------------------------------------------------------------------
 # generate 1 bp TSS intervals, `+` strand only
 tss <- genes %>%
   filter(strand == '+') %>%
@@ -154,7 +154,7 @@ x <- tss %>%
 
 x
 
-## ----map-----------------------------------------------------------------
+## ----map----------------------------------------------------------------------
 # map signals to TSS regions and calculate summary statistics.
 res <- bed_map(x, y, win_sum = sum(value, na.rm = TRUE)) %>%
   group_by(.win_id) %>%

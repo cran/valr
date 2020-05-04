@@ -1,15 +1,13 @@
 
 # valr <img src="man/figures/logo.png" align="right" />
 
-[![Build
-Status](https://travis-ci.org/rnabioco/valr.svg?branch=master)](https://travis-ci.org/rnabioco/valr)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/rnabioco/valr?branch=master&svg=true)](https://ci.appveyor.com/project/jayhesselberth/valr)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/rnabioco/valr/master.svg)](https://codecov.io/github/rnabioco/valr?branch=master)
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/rnabioco/valr/workflows/R-CMD-check/badge.svg)](https://github.com/rnabioco/valr/actions)
+[![codecov](https://codecov.io/gh/rnabioco/valr/branch/master/graph/badge.svg)](https://codecov.io/gh/rnabioco/valr)
 [![](https://www.r-pkg.org/badges/version/valr)](https://CRAN.R-project.org/package=valr)
-[![](https://cranlogs.r-pkg.org/badges/valr?color=FFD700)](https://www.r-pkg.org/pkg/valr)
-[![DOI](https://zenodo.org/badge/49370633.svg)](https://zenodo.org/badge/latestdoi/49370633)
+<!-- badges: end -->
 
 The valr package provides tools to read and manipulate genome intervals
 and signals, similar to the
@@ -74,5 +72,5 @@ nearby %>%
 #>  8 rs528403095 DQ571479        0  3309
 #>  9 rs555126291 DQ571479        0  2745
 #> 10 rs5747567   DQ571479        0 -1778
-#> # ... with 1,037 more rows
+#> # … with 1,037 more rows
 ```

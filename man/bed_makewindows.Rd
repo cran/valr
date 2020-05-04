@@ -4,11 +4,17 @@
 \alias{bed_makewindows}
 \title{Divide intervals into new sub-intervals ("windows").}
 \usage{
-bed_makewindows(x, genome = NULL, win_size = 0, step_size = 0,
-  num_win = 0, reverse = FALSE)
+bed_makewindows(
+  x,
+  genome = NULL,
+  win_size = 0,
+  step_size = 0,
+  num_win = 0,
+  reverse = FALSE
+)
 }
 \arguments{
-\item{x}{\code{\link[=tbl_interval]{tbl_interval()}}}
+\item{x}{\link{ivl_df}}
 
 \item{genome}{this argument has been deprecated and is not used}
 
@@ -21,7 +27,7 @@ bed_makewindows(x, genome = NULL, win_size = 0, step_size = 0,
 \item{reverse}{reverse window numbers}
 }
 \value{
-\code{\link[=tbl_interval]{tbl_interval()}} with \code{.win_id} column that contains a numeric
+\link{ivl_df} with \code{.win_id} column that contains a numeric
 identifier for the window.
 }
 \description{
@@ -33,7 +39,7 @@ interval names (see 'namenum' example below) or in subsequent
 \code{group_by} operations (see vignette).
 }
 \examples{
-x <- trbl_interval(
+x <- tibble::tribble(
   ~chrom, ~start, ~end, ~name, ~score, ~strand,
   "chr1", 100,    200,  'A',   '.',    '+'
 )
@@ -58,9 +64,10 @@ dplyr::mutate(wins, namenum = stringr::str_c(name, '_', .win_id))
 
 }
 \seealso{
-Other utilities: \code{\link{bed12_to_exons}},
-  \code{\link{bound_intervals}},
-  \code{\link{flip_strands}},
-  \code{\link{interval_spacing}}
+Other utilities: 
+\code{\link{bed12_to_exons}()},
+\code{\link{bound_intervals}()},
+\code{\link{flip_strands}()},
+\code{\link{interval_spacing}()}
 }
 \concept{utilities}
