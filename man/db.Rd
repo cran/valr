@@ -42,7 +42,7 @@ Currently \code{db_ucsc} and \code{db_ensembl} are available for connections.
 }
 \examples{
 \dontrun{
-if(require(RMySQL)) {
+if(require(RMariaDB)) {
   ucsc <- db_ucsc('hg38')
 
   # fetch the `refGene` tbl
@@ -52,9 +52,8 @@ if(require(RMySQL)) {
   tbl(ucsc, "chromInfo")
 }
 }
-
 \dontrun{
-if(require(RMySQL)) {
+if(require(RMariaDB)) {
   # squirrel genome
   ensembl <- db_ensembl('spermophilus_tridecemlineatus_core_67_2')
 
@@ -66,5 +65,5 @@ if(require(RMySQL)) {
 \seealso{
 \url{https://genome.ucsc.edu/goldenpath/help/mysql.html}
 
-\url{http://www.ensembl.org/info/data/mysql.html}
+\url{https://www.ensembl.org/info/data/mysql.html}
 }

@@ -12,7 +12,7 @@
 #'
 #' @family randomizing operations
 #'
-#' @seealso \url{http://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html}
+#' @seealso \url{https://bedtools.readthedocs.io/en/latest/content/tools/shuffle.html}
 #'
 #' @examples
 #' genome <- tibble::tribble(
@@ -63,5 +63,5 @@ bed_shuffle <- function(x, genome, incl = NULL, excl = NULL,
   # bind original x column data to result (#81)
   res <- bind_cols(res, as_tibble(x[, !colnames(x) %in% colnames(res)]))
 
-  res
+  as_tibble(res)
 }
