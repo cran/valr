@@ -1,7 +1,7 @@
 Package: valr
 Type: Package
 Title: Genome Interval Arithmetic
-Version: 0.6.2
+Version: 0.6.3
 Authors@R: c(
     person('Jay', 'Hesselberth', role = c('aut', 'cre'),
       email = 'jay.hesselberth@gmail.com',
@@ -31,10 +31,10 @@ URL: https://github.com/rnabioco/valr/,
 BugReports: https://github.com/rnabioco/valr/issues
 Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2020-10-07 15:43:11 UTC; jayhesselberth
+Packaged: 2021-05-15 01:09:43 UTC; jayhesselberth
 Author: Jay Hesselberth [aut, cre] (<https://orcid.org/0000-0002-6299-179X>),
   Kent Riemondy [aut] (<https://orcid.org/0000-0003-0750-1273>),
   RNA Bioscience Initiative [fnd]
 Maintainer: Jay Hesselberth <jay.hesselberth@gmail.com>
 Repository: CRAN
-Date/Publication: 2020-10-07 17:20:02 UTC
+Date/Publication: 2021-05-15 05:30:03 UTC
