@@ -61,7 +61,7 @@ bases
 
 ## ----db, warning = FALSE, eval = FALSE----------------------------------------
 #  # access the `refGene` tbl on the `hg38` assembly.
-#  if(require(RMySQL)) {
+#  if(require(RMariaDB)) {
 #    ucsc <- db_ucsc('hg38')
 #    tbl(ucsc, 'refGene')
 #  }

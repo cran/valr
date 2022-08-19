@@ -1,13 +1,13 @@
 Type: Package
 Package: valr
 Title: Genome Interval Arithmetic
-Version: 0.6.4
+Version: 0.6.5
 Authors@R: c(
     person("Jay", "Hesselberth", , "jay.hesselberth@cuanschutz.edu", role = c("aut"),
            comment = c(ORCID = "0000-0002-6299-179X")),
     person("Kent", "Riemondy", , "kent.riemondy@cuanschutz.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0750-1273")),
-    person("RNA Bioscience Initiative", role = "fnd")
+    person("RNA Bioscience Initiative", role = c("fnd", "cph"))
   )
 Description: Read and manipulate genome intervals and signals. Provides
     functionality similar to command-line tool suites within R, enabling
@@ -26,13 +26,14 @@ Suggests: bench, covr, cowplot, curl, DBI, dbplyr, devtools, DT,
 LinkingTo: Rcpp (>= 1.0.0)
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.0
 SystemRequirements: C++11
+Config/Needs/website: pkgdown, rnabioco/rbitemplate
 NeedsCompilation: yes
-Packaged: 2021-12-08 17:40:38 UTC; kriemo
+Packaged: 2022-08-19 13:51:13 UTC; kriemo
 Author: Jay Hesselberth [aut] (<https://orcid.org/0000-0002-6299-179X>),
   Kent Riemondy [aut, cre] (<https://orcid.org/0000-0003-0750-1273>),
-  RNA Bioscience Initiative [fnd]
+  RNA Bioscience Initiative [fnd, cph]
 Maintainer: Kent Riemondy <kent.riemondy@cuanschutz.edu>
 Repository: CRAN
-Date/Publication: 2021-12-08 23:00:02 UTC
+Date/Publication: 2022-08-19 14:30:02 UTC

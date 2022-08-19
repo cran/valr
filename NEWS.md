@@ -1,3 +1,7 @@
+# valr 0.6.5
+
+* Handle `max_dist` for first intervals in `bed_cluster()` (#388) 
+
 # valr 0.6.4
 
 * Fixed intron score numbering error in `create_introns` (#377 @sheridar) 
