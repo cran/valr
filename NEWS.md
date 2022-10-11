@@ -1,3 +1,12 @@
+# valr 0.6.6
+
+* Updated [intervalTree](https://github.com/ekg/intervaltree) header to commit f0c4046
+
+* valr now uses [cli](https://cli.r-lib.org/index.html) for more consistent
+  errors and messages during interactive use.
+
+* deprecated `genome` argument to `bed_makewindows()` was removed.
+
 # valr 0.6.5
 
 * Handle `max_dist` for first intervals in `bed_cluster()` (#388) 
