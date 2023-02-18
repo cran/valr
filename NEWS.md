@@ -1,3 +1,9 @@
+# valr 0.6.7
+
+* Removed `SystemRequirements` from DESCRIPTION to eliminate a NOTE on CRAN.
+
+* `bed_coverage()` now reports intervals from `x` with no matching group in `y` (#395).  
+
 # valr 0.6.6
 
 * Updated [intervalTree](https://github.com/ekg/intervaltree) header to commit f0c4046
