@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2023-02-18" />
+<meta name="date" content="2023-05-16" />
 
 <title>valr overview</title>
 
@@ -338,7 +338,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">valr overview</h1>
-<h4 class="date">2023-02-18</h4>
+<h4 class="date">2023-05-16</h4>
 
 
 <div id="TOC">
@@ -396,7 +396,7 @@ side.</li>
 pipe operator from <code>magrittr</code> (<code>%&gt;%</code>).</li>
 <li>Maximizes speed by implementing compute-intensive algorithms in
 <code>Rcpp</code>.</li>
-<li>Facilitates interactive visualizations with <a href="https://shiny.rstudio.com/"><code>shiny</code></a>.</li>
+<li>Facilitates interactive visualizations with <a href="https://shiny.posit.co/"><code>shiny</code></a>.</li>
 </ul>
 <p><code>valr</code> can currently be used for analysis of pre-processed
 data in BED and related formats. We plan to support BAM and VCF files
@@ -421,7 +421,7 @@ coming from the <code>BEDtools</code> suite. Similar to <a href="https://daler.g
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>nearby <span class="sc">%&gt;%</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&quot;name&quot;</span>), .overlap, .dist) <span class="sc">%&gt;%</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">abs</span>(.dist) <span class="sc">&lt;</span> <span class="dv">1000</span>)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 284 × 4</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 285 × 4</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    name.x      name.y            .overlap .dist</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;chr&gt;                &lt;int&gt; &lt;int&gt;</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 rs2261631   P704P                    0  -268</span></span>
@@ -434,7 +434,7 @@ coming from the <code>BEDtools</code> suite. Similar to <a href="https://daler.g
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 rs114101676 GAB4                     0   474</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 rs62236167  CECR7                    0   262</span></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 rs5747023   CECR1                    0  -387</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 274 more rows</span></span></code></pre></div>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 275 more rows</span></span></code></pre></div>
 </div>
 <div id="input-data" class="section level3">
 <h3>Input data</h3>
@@ -667,7 +667,7 @@ numbers.</p>
 <span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 chr22 16161415 16161465 LINC00516 3     +            8</span></span>
 <span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 chr22 16161465 16161515 LINC00516 3     +            9</span></span>
 <span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 chr22 16161515 16161565 LINC00516 3     +           10</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 13,520 more rows</span></span></code></pre></div>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 13,520 more rows</span></span></code></pre></div>
 <p>Now we use the <code>.win_id</code> group with <code>bed_map()</code>
 to calculate a sum by mapping <code>y</code> signals onto the intervals
 in <code>x</code>. These data are regrouped by <code>.win_id</code> and
@@ -695,7 +695,7 @@ calculated.</p>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8       8     128.   91.5</span></span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9       9     130.   95.7</span></span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10      10     130.   88.8</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 31 more rows</span></span></code></pre></div>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 31 more rows</span></span></code></pre></div>
 <p>Finally, these summary statistics are used to construct a plot that
 illustrates histone density surrounding TSSs.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>

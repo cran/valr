@@ -29,15 +29,10 @@ void init_factor(SEXP x, SEXP levels) {
 // http://kevinushey.github.io/blog/2015/01/24/understanding-data-frame-subsetting/
 // Input row indices are assumed to be zero-based
 DataFrame rowwise_subset_df(const DataFrame& x,
-                            IntegerVector row_indices,
-                            bool r_index = false) {
+                            IntegerVector row_indices) {
 
   int column_indices_n = x.ncol();
   int row_indices_n = row_indices.size();
-
-  if (r_index) {
-    row_indices = row_indices - 1;
-  }
 
   List output = no_init(column_indices_n);
 
@@ -125,17 +120,10 @@ DataFrame rowwise_subset_df(const DataFrame& x,
 
 // use std::vector<int> indices rather than IntegerVector
 DataFrame rowwise_subset_df(const DataFrame& x,
-                            std::vector<int> row_indices,
-                            bool r_index = false) {
+                            std::vector<int> row_indices) {
 
   int column_indices_n = x.ncol();
   int row_indices_n = row_indices.size();
-
-  if (r_index) {
-    for (auto i:row_indices) {
-      i--;
-    }
-  }
 
   List output = no_init(column_indices_n);
 
@@ -224,14 +212,14 @@ DataFrame rowwise_subset_df(const DataFrame& x,
 DataFrame subset_dataframe(const DataFrame& df,
                            std::vector<int> indices) {
 
-  DataFrame out = rowwise_subset_df(df, indices, false);
+  DataFrame out = rowwise_subset_df(df, indices);
   return (out) ;
 }
 
 DataFrame subset_dataframe(const DataFrame& df,
                            IntegerVector indices) {
 
-  DataFrame out = rowwise_subset_df(df, indices, false);
+  DataFrame out = rowwise_subset_df(df, indices);
   return (out) ;
 }
 
@@ -259,3 +247,16 @@ DataFrame extract_groups(const DataFrame& x) {
   res.attr("class") = "data.frame" ;
   return res;
 }
+
+
+// debug utility to print out interval tree structure
+// add export declaration when needed for debugging from R
+void print_ivl_tree(const DataFrame& x, int depth = 16,
+                    int minbucket = 64, int maxbucket = 512){;
+  int nx = x.nrow() ;
+  IntegerVector si = seq_len(nx);
+  ivl_vector_t vx = makeIntervalVector(x, si) ;
+  IntervalTree<int, int> itree(std::move(vx), depth, minbucket, maxbucket) ;
+  Rcout << itree << "\n";
+}
+
