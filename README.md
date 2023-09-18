@@ -40,16 +40,16 @@ has a terse syntax:
 library(valr)
 library(dplyr)
 
-snps <- read_bed(valr_example("hg19.snps147.chr22.bed.gz"), n_fields = 6)
-genes <- read_bed(valr_example("genes.hg19.chr22.bed.gz"), n_fields = 6)
+snps <- read_bed(valr_example("hg19.snps147.chr22.bed.gz"))
+genes <- read_bed(valr_example("genes.hg19.chr22.bed.gz"))
 
 # find snps in intergenic regions
 intergenic <- bed_subtract(snps, genes)
 # find distance from intergenic snps to nearest gene
 nearby <- bed_closest(intergenic, genes)
 
-nearby %>%
-  select(starts_with("name"), .overlap, .dist) %>%
+nearby |>
+  select(starts_with("name"), .overlap, .dist) |>
   filter(abs(.dist) < 5000)
 #> # A tibble: 1,047 × 4
 #>    name.x      name.y   .overlap .dist
@@ -64,5 +64,5 @@ nearby %>%
 #>  8 rs528403095 DQ571479        0  3309
 #>  9 rs555126291 DQ571479        0  2745
 #> 10 rs5747567   DQ571479        0 -1778
-#> # … with 1,037 more rows
+#> # ℹ 1,037 more rows
 ```

@@ -1,6 +1,6 @@
 genome <- read_genome(valr_example("hg19.chrom.sizes.gz"))
 
-x <- read_bed(valr_example("6fields.bed.gz"), n_fields = 6)
+x <- read_bed(valr_example("6fields.bed.gz"))
 x_facs <- x
 
 x_facs$chrom <- factor(x_facs$chrom)
@@ -26,8 +26,8 @@ test_that("mixing factor and character vectors for grouping works", {
 
 
 test_that("factors with no entries are handled ", {
-  x_empty_groups <- x_facs_grpd %>%
-    filter(strand == "+", chrom == "chr1") %>%
+  x_empty_groups <- x_facs_grpd |>
+    filter(strand == "+", chrom == "chr1") |>
     group_by(strand)
 
   # throws 2 warnings
