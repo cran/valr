@@ -1,7 +1,7 @@
-d5a15658b702a4d289fa5d2077c04851 *DESCRIPTION
+4793c6d15033525bc0eecfa2a12a4ac0 *DESCRIPTION
 370dd625f4068321dfe7e6be26872b3d *LICENSE
 bf4d2feda37f4b075592860af2be4d77 *NAMESPACE
-dcb682bfdfadd9d9da1258a980a0139a *NEWS.md
+47896b7180a5839ca3eaa908edfee216 *NEWS.md
 7a8614948da97044a031b8c4d4b34f26 *R/RcppExports.R
 0e5bb067a81b416aea31ea276cad74be *R/bed12_to_exons.r
 c7ab2ed884727c3f5e72cac8c8723ad9 *R/bed_absdist.r
@@ -45,7 +45,7 @@ e46278ffe1f2911e94db93a58063bccb *R/valr-package.r
 da5226309652d477e402bac0a6b4b17d *inst/CITATION
 378e968e29a3388acfe975c2d2ec80eb *inst/doc/valr.R
 446bc6f147488f608d285ba80634f0fd *inst/doc/valr.Rmd
-aedfa342e89689d16b234703569b2fd9 *inst/doc/valr.html
+6dd241e3788f25f7579eb635517e094c *inst/doc/valr.html
 e879fa4db85fb545fc30d78b9f461c95 *inst/example/bed_map.r
 8916e5493ed40b06977fab5b3cef68b2 *inst/extdata/12fields.bed.gz
 bfbfa858b5ecd22a2f4a14368722bb2a *inst/extdata/3fields.bed.gz
@@ -140,7 +140,7 @@ e319a71c763cc2449a8c92411954c052 *src/makewindows.cpp
 3a48c2c7c81ede76c0291ef86ff135c0 *src/shuffle.cpp
 59ae97eb380cf30d4f4e46194eb9f777 *src/subtract.cpp
 9f2dc700833fcfcfe31f20bbb284bb3a *src/valr_utils.cpp
-51af5c0864b41e5c1392194296040e89 *tests/testthat.R
+86b0f2177352995a8f07c808fac4e06f *tests/testthat.R
 b9cfd07274fa8139332e1b5098d2e7a9 *tests/testthat/_snaps/glyph/intersect-glyph-is-ok.svg
 09a1a4f650a0cf7cf79ae1116debb34d *tests/testthat/_snaps/glyph/merge-glyph-is-ok.svg
 9d2ee5bc18ab6d344dcda1722008dc9e *tests/testthat/helper-astyle.r

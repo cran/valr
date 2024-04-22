@@ -1,3 +1,7 @@
+# valr 0.8.1
+
+* Make vdiffr dependency optional during package testing. 
+
 # valr 0.8.0
 
 * Added `bed_genomecov()` to compute interval coverage across a genome.
