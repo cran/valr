@@ -1,3 +1,9 @@
+# valr 0.8.2
+
+* Address NOTE on CRAN about Rd link targets.  
+
+* Change maintainer email address. 
+
 # valr 0.8.1
 
 * Make vdiffr dependency optional during package testing. 

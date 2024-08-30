@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/rnabioco/valr/workflows/R-CMD-check/badge.svg)](https://github.com/rnabioco/valr/actions)
+[![R-CMD-check](https://github.com/rnabioco/valr/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/rnabioco/valr/actions/workflows/check-standard.yaml)
 [![codecov](https://codecov.io/gh/rnabioco/valr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/rnabioco/valr)
 [![](https://www.r-pkg.org/badges/version/valr)](https://CRAN.R-project.org/package=valr)
 <!-- badges: end -->
@@ -14,18 +14,24 @@ suite.
 
 ## Installation
 
-The latest stable version can be installed from CRAN:
+<div class=".pkgdown-release">
 
 ``` r
-install.packages('valr')
+# Install released version from CRAN
+install.packages("valr")
 ```
 
-The latest development version can be installed from github:
+</div>
+
+<div class=".pkgdown-devel">
 
 ``` r
-# install.packages("devtools")
-devtools::install_github('rnabioco/valr')
+# Install development version from GitHub
+# install.packages("pak")
+pak::pak("rnabioco/valr")
 ```
+
+</div>
 
 ## valr Example
 

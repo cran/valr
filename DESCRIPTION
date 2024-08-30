@@ -1,11 +1,11 @@
 Type: Package
 Package: valr
 Title: Genome Interval Arithmetic
-Version: 0.8.1
+Version: 0.8.2
 Authors@R: c(
     person("Jay", "Hesselberth", , "jay.hesselberth@cuanschutz.edu", role = c("aut"),
            comment = c(ORCID = "0000-0002-6299-179X")),
-    person("Kent", "Riemondy", , "kent.riemondy@cuanschutz.edu", role = c("aut", "cre"),
+    person("Kent", "Riemondy", , "kent.riemondy@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-0750-1273")),
     person("RNA Bioscience Initiative", role = c("fnd", "cph"))
   )
@@ -27,14 +27,14 @@ biocViews:
 LinkingTo: Rcpp (>= 1.0.0)
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.3.1
-Config/Needs/website: pkgdown, rnabioco/rbitemplate
+RoxygenNote: 7.3.2
+Config/Needs/website: r-lib/pkgdown, rnabioco/rbitemplate
 Config/testthat/edition: 3
 NeedsCompilation: yes
-Packaged: 2024-04-22 16:42:24 UTC; kriemo
+Packaged: 2024-08-30 21:09:25 UTC; kriemo
 Author: Jay Hesselberth [aut] (<https://orcid.org/0000-0002-6299-179X>),
   Kent Riemondy [aut, cre] (<https://orcid.org/0000-0003-0750-1273>),
   RNA Bioscience Initiative [fnd, cph]
-Maintainer: Kent Riemondy <kent.riemondy@cuanschutz.edu>
+Maintainer: Kent Riemondy <kent.riemondy@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-04-22 18:30:03 UTC
+Date/Publication: 2024-08-30 22:10:03 UTC
