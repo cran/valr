@@ -1,7 +1,7 @@
 Type: Package
 Package: valr
 Title: Genome Interval Arithmetic
-Version: 0.8.2
+Version: 0.8.3
 Authors@R: c(
     person("Jay", "Hesselberth", , "jay.hesselberth@cuanschutz.edu", role = c("aut"),
            comment = c(ORCID = "0000-0002-6299-179X")),
@@ -17,9 +17,9 @@ License: MIT + file LICENSE
 URL: https://github.com/rnabioco/valr/,
         https://rnabioco.github.io/valr/
 BugReports: https://github.com/rnabioco/valr/issues
-Depends: R (>= 3.1.2)
-Imports: broom, cli, dplyr (>= 0.8.0), ggplot2, lifecycle, Rcpp (>=
-        1.0.0), readr, rlang, rtracklayer, stringr, tibble (>= 1.4.2)
+Depends: R (>= 4.0.0)
+Imports: broom, cli, cpp11bigwig, dplyr (>= 0.8.0), ggplot2, lifecycle,
+        Rcpp (>= 1.0.0), readr, rlang, stringr, tibble (>= 1.4.2)
 Suggests: bench, covr, cowplot, curl, DBI, dbplyr, devtools, DT,
         GenomicRanges, IRanges, knitr, purrr, RMariaDB, rmarkdown,
         S4Vectors, testthat (>= 3.0.0), vdiffr (>= 1.0.0), tidyr
@@ -31,10 +31,10 @@ RoxygenNote: 7.3.2
 Config/Needs/website: r-lib/pkgdown, rnabioco/rbitemplate
 Config/testthat/edition: 3
 NeedsCompilation: yes
-Packaged: 2024-08-30 21:09:25 UTC; kriemo
+Packaged: 2025-01-08 14:32:04 UTC; kriemo
 Author: Jay Hesselberth [aut] (<https://orcid.org/0000-0002-6299-179X>),
   Kent Riemondy [aut, cre] (<https://orcid.org/0000-0003-0750-1273>),
   RNA Bioscience Initiative [fnd, cph]
 Maintainer: Kent Riemondy <kent.riemondy@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-08-30 22:10:03 UTC
+Date/Publication: 2025-01-11 15:40:02 UTC

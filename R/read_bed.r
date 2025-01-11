@@ -174,43 +174,30 @@ bed12_coltypes <- list(
 )
 
 
-#' Import and convert a bigwig file into a valr compatible tbl
+#' Read a bigwig file into a valr compatible tbl
 #'
-#' @description This function will output a 5 column tibble with
-#' zero-based chrom, start, end, score, and strand columns.
+#' This function will output a 4 column tibble with
+#' zero-based chrom, start, end, value columns.
 #'
 #' @param path path to bigWig file
-#' @param set_strand strand to add to output (defaults to "+")
-#'
-#' @note This functions uses \code{rtracklayer} to import bigwigs which
-#' has unstable support for the windows platform and therefore may error
-#' for windows users (particularly for 32 bit window users).
+#' @param ... params for `cpp11bigwig::read_bigwig()`
 #'
 #' @examples
-#' \dontrun{
-#' if (.Platform$OS.type != "windows") {
-#'   bw <- read_bigwig(valr_example("hg19.dnase1.bw"))
-#'   head(bw)
-#' }
-#' }
-#' @importFrom rtracklayer import
+#' read_bigwig(valr_example("hg19.dnase1.bw"))
+#'
+#' read_bigwig(valr_example("hg19.dnase1.bw"), as = "GRanges")
+#'
 #' @export
-read_bigwig <- function(path, set_strand = "+") {
-  check_required(path)
-  # note that rtracklayer will produce a one-based GRanges object
-  res <- rtracklayer::import(path)
-  res <- dplyr::as_tibble(res)
-  res <- dplyr::mutate(res,
-    chrom = as.character(seqnames),
-    start = start - 1L,
-    strand = set_strand
-  )
-  dplyr::select(res, chrom, start, end, score, strand)
+read_bigwig <- function(path, ...) {
+  cpp11bigwig::read_bigwig(path, ...)
 }
 
 #' Import and convert a GTF/GFF file into a valr compatible bed tbl format
 #'
-#' @description This function will output a tibble with the
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' This function will output a tibble with the
 #' required chrom, start, and end columns, as well as other columns depending
 #' on content in GTF/GFF file.
 #'
@@ -219,20 +206,26 @@ read_bigwig <- function(path, set_strand = "+") {
 #'
 #' @examples
 #'
+#' \dontrun{
 #' gtf <- read_gtf(valr_example("hg19.gencode.gtf.gz"))
 #' head(gtf)
+#' }
 #'
-#' @importFrom rtracklayer import
 #' @export
 read_gtf <- function(path, zero_based = TRUE) {
-  gtf <- rtracklayer::import(path)
-  gtf <- as.data.frame(gtf)
-  gtf <- dplyr::mutate_if(gtf, is.factor, as.character)
-  res <- dplyr::rename(gtf, chrom = seqnames)
-
-  if (zero_based) {
-    res <- dplyr::mutate(res, start = start - 1L)
-  }
-
-  tibble::as_tibble(res)
+  lifecycle::deprecate_stop(
+    when = "0.8.3",
+    what = "read_gtf()",
+    details = c(
+      x = paste0(
+        "read_gtf() was removed because rtracklayer does not pass ",
+        "CRAN AddressSantizer checks of the UCSC C-library code vendored ",
+        "in rtracklayer."
+      ),
+      i = paste0(
+        "convert GTF to BED, and then `read_bed()`, ",
+        "or use `rtracklayer::import()` then `gr_to_bed()`."
+      )
+    )
+  )
 }
