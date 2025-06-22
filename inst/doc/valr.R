@@ -60,11 +60,11 @@ bases <- tribble(
 bases
 
 ## -----------------------------------------------------------------------------
-#  # access the `refGene` tbl on the `hg38` assembly.
-#  if (require(RMariaDB)) {
-#    ucsc <- db_ucsc("hg38")
-#    tbl(ucsc, "refGene")
-#  }
+# # access the `refGene` tbl on the `hg38` assembly.
+# if (require(RMariaDB)) {
+#   ucsc <- db_ucsc("hg38")
+#   tbl(ucsc, "refGene")
+# }
 
 ## -----------------------------------------------------------------------------
 x <- tribble(
@@ -120,11 +120,11 @@ y <- group_by(y, strand)
 bed_intersect(x, y)
 
 ## -----------------------------------------------------------------------------
-#  # calculate the mean and variance for a `value` column
-#  bed_map(a, b, .mean = mean(value), .var = var(value))
-#  
-#  # report concatenated and max values for merged intervals
-#  bed_merge(a, .concat = concat(value), .max = max(value))
+# # calculate the mean and variance for a `value` column
+# bed_map(a, b, .mean = mean(value), .var = var(value))
+# 
+# # report concatenated and max values for merged intervals
+# bed_merge(a, .concat = concat(value), .max = max(value))
 
 ## -----------------------------------------------------------------------------
 # `valr_example()` identifies the path of example files
