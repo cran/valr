@@ -5,15 +5,15 @@
 #' output columns will be suffixed with `.x` and `.y`. Expressions that refer to
 #' input columns from `x` and `y` columns must take these suffixes into account.
 #'
-#' Book-ended intervals can be included by setting `min_overlap = 0`.
-#'
 #' Non-intersecting intervals from `x` are included in the result with `NA`
 #' values.
 #'
 #' @param x [ivl_df]
 #' @param y  [ivl_df]
 #' @param ... name-value pairs specifying column names and expressions to apply
-#' @param min_overlap minimum overlap for intervals.
+#' @param min_overlap minimum overlap in base pairs required for mapping.
+#'   Default is `1`, meaning book-ended intervals (touching but not overlapping)
+#'   are not included. Set to `0` to include book-ended intervals.
 #'
 #' @template groups
 #'
@@ -27,7 +27,7 @@
 #' @example inst/example/bed_map.r
 #'
 #' @export
-bed_map <- function(x, y, ..., min_overlap = 1) {
+bed_map <- function(x, y, ..., min_overlap = 1L) {
   check_required(x)
   check_required(y)
 
@@ -70,19 +70,27 @@ bed_map <- function(x, y, ..., min_overlap = 1) {
     grp_indexes$y,
     invert = TRUE,
     suffix_x = ".x",
-    suffix_y = ""
+    suffix_y = "",
+    min_overlap = min_overlap
   )
+  res <- tibble::as_tibble(res)
 
   ## filter for rows that don't intersect. The `duplicated` call is required
   ## because book-ended intervals in the intersect_impl result can
   ## book-end multiple `y` intervals, causing them to be duplicated after the
   ## `select`. base::duplicated is ~10x faster than dplyr::distinct
-  res_noint <- filter(res, is.na(.overlap) | .overlap < min_overlap)
-  res_noint <- select(res_noint, chrom, ends_with(".x"))
+  res_noint <- filter(
+    res,
+    is.na(.data[[".overlap"]]) | .data[[".overlap"]] < min_overlap
+  )
+  res_noint <- select(res_noint, all_of("chrom"), ends_with(".x"))
   res_noint <- res_noint[!duplicated(res_noint[[.id_col_out]]), ]
 
   ## identify intersecting intervals
-  res_int <- filter(res, !is.na(.overlap) & .overlap >= min_overlap)
+  res_int <- filter(
+    res,
+    !is.na(.data[[".overlap"]]) & .data[[".overlap"]] >= min_overlap
+  )
 
   ## drop non-intersecting intervals that are also in the intersecting set
   ## this prevents duplicate reporting of an x interval if it both bookends

@@ -67,7 +67,9 @@ read_bed <- function(
     ...
   )
 
-  if (sort) out <- bed_sort(out)
+  if (sort) {
+    out <- bed_sort(out)
+  }
 
   out
 }
@@ -108,8 +110,8 @@ read_bedgraph <- function(filename, ...) {
     cli::cli_abort("expected 4 columns in bedgraph")
   }
   out <- read_bed(filename, sort = FALSE)
-  out <- select(out, everything(), value = name)
-  out <- mutate(out, value = as.double(value))
+  out <- select(out, everything(), value = all_of("name"))
+  out <- mutate(out, value = as.double(.data[["value"]]))
   out
 }
 
@@ -179,25 +181,6 @@ bed12_coltypes <- list(
   exon_sizes = readr::col_character(),
   exon_starts = readr::col_character()
 )
-
-
-#' Read a bigwig file into a valr compatible tbl
-#'
-#' This function will output a 4 column tibble with
-#' zero-based chrom, start, end, value columns.
-#'
-#' @param path path to bigWig file
-#' @param ... params for `cpp11bigwig::read_bigwig()`
-#'
-#' @examples
-#' read_bigwig(valr_example("hg19.dnase1.bw"))
-#'
-#' read_bigwig(valr_example("hg19.dnase1.bw"), as = "GRanges")
-#'
-#' @export
-read_bigwig <- function(path, ...) {
-  cpp11bigwig::read_bigwig(path, ...)
-}
 
 #' Import and convert a GTF/GFF file into a valr compatible bed tbl format
 #'

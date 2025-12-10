@@ -1,8 +1,7 @@
-# fmt: skip
 x <- tibble::tribble(
-  ~chrom, ~start, ~end, ~name,
-  "chr1", 100, 200, "A",
-  "chr2", 300, 350, "B"
+  ~chrom , ~start , ~end , ~name ,
+  "chr1" ,    100 ,  200 , "A"   ,
+  "chr2" ,    300 ,  350 , "B"
 )
 
 # Window IDs are generated
@@ -103,10 +102,9 @@ test_that("interval is smaller than n windows", {
 
 # from https://github.com/arq5x/bedtools2/blob/master/test/makewindows/test-makewindows.sh
 test_that("always get the number of requested windows. issue #322", {
-  # fmt: skip
   x <- tibble::tribble(
-    ~chrom, ~start, ~end, ~name,
-    "chr1", 11, 44, "A"
+    ~chrom , ~start , ~end , ~name ,
+    "chr1" ,     11 ,   44 , "A"
   )
   res <- bed_makewindows(x, num_win = 10)
   expect_equal(nrow(res), 10)
@@ -120,13 +118,42 @@ test_that("report error if negative value win_size or num_win arguments supplied
 })
 
 test_that("check num_win reported correctly for additional intervals (related to #322)", {
-  # fmt: skip
   x <- tibble::tribble(
-    ~chrom, ~start, ~end,
-    "chr1", 9437053, 9438070,
-    "chr1", 75360291, 75368579,
-    "chr1", 86351980, 86352127
+    ~chrom , ~start   , ~end     ,
+    "chr1" ,  9437053 ,  9438070 ,
+    "chr1" , 75360291 , 75368579 ,
+    "chr1" , 86351980 , 86352127
   )
   res <- bed_makewindows(x, num_win = 100)
   expect_equal(max(res$.win_id), 100)
+})
+
+test_that("step_size creates correct overlapping windows (#438)", {
+  bed <- tibble(
+    chrom = "chr1",
+    start = 0,
+    end = 1000
+  )
+
+  # Test the reported bug case
+  res <- bed_makewindows(bed, win_size = 200, step_size = 50)
+
+  # Check that second window starts at 50, not 150 (this is the main bug fix)
+  expect_equal(res$start[2], 50)
+  expect_equal(res$end[2], 250)
+
+  # Test that using step_size=10 generates windows starting every 10 bases (regression test for correct window stepping)
+  res_10 <- bed_makewindows(bed, win_size = 100, step_size = 10)
+
+  # Verify the step size is correct by checking differences
+  start_diffs <- diff(res_10$start)
+  expect_true(all(start_diffs == 10))
+
+  # Verify first few windows are positioned correctly
+  expect_equal(res_10$start[1:5], c(0, 10, 20, 30, 40))
+
+  # Test that step_size = 0 behaves like no step_size (non-overlapping)
+  res_no_step <- bed_makewindows(bed, win_size = 200)
+  res_step_zero <- bed_makewindows(bed, win_size = 200, step_size = 0)
+  expect_equal(res_no_step, res_step_zero)
 })

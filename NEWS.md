@@ -1,3 +1,23 @@
+# valr 0.9.0
+
+## Breaking changes
+
+* Added `min_overlap` parameter to `bed_intersect()`, `bed_subtract()`, `bed_coverage()`, and `bed_map()`. The default `min_overlap = 1L` aligns with bedtools behavior where book-ended (adjacent) intervals are **not** considered overlapping. Use `min_overlap = 0L` to preserve the previous valr behavior where book-ended intervals were treated as overlapping. Currently, calling these functions without an explicit `min_overlap` value will emit a deprecation warning and use the legacy behavior (`min_overlap = 0L`). In a future release, the default will change to `min_overlap = 1L`, so users should update their code to explicitly specify the desired behavior.
+
+## Major changes
+
+* Migrated C++ backend from Rcpp to cpp11. This modernizes the codebase and removes the Rcpp dependency. All interval operations maintain identical behavior.
+
+## Minor changes
+
+* Eliminated all global variable dependencies by replacing bare column names with explicit `.data[["column"]]` syntax in data manipulation operations and `all_of()` in column selection operations.
+
+* Fixed `bed_makewindows()` step size calculation when `step_size` parameter is used. Previously, overlapping windows stepped by `win_size - step_size` instead of the specified `step_size` (#438).
+
+* Select methods (`tibble`, `tribble`) are now re-exported from the `tibble` package.
+
+* `read_bigbed()` is now re-exported from the `cpp11bigwig` package.
+
 # valr 0.8.4
 
 * Update a test for compatibility with forthcoming ggplot2 3.6.0 (#431)
@@ -225,9 +245,9 @@ be suppressed by using `sorted = FALSE`.
 
 * Make `.id` values sequential across chroms in `bed_cluster()` output (#171)
 
-* Transfer repository to http://github.com/rnabioco/valr, update links and docs.
+* Transfer repository to <https://github.com/rnabioco/valr>, update links and docs.
 
-* Move shiny app to new repo (http://github.com/rnabioco/valrdata).
+* Move shiny app to new repo (<https://github.com/rnabioco/valrdata>).
 
 * Add Kent Riemondy to LICENSE file.
 
@@ -239,14 +259,14 @@ be suppressed by using `sorted = FALSE`.
 
 ## Minor changes
 
-- test / vignette guards for Suggested RMySQL
+* test / vignette guards for Suggested RMySQL
 
-- fixed memory leak in absdist.cpp
+* fixed memory leak in absdist.cpp
 
-- fixed vignette entry names
+* fixed vignette entry names
 
 # valr 0.1.0
 
 ## Major changes
 
-- initial release on CRAN
+* initial release on CRAN

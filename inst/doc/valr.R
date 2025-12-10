@@ -33,9 +33,9 @@ read_bed(bed_file) # accepts filepaths or URLs
 
 ## -----------------------------------------------------------------------------
 bed <- tribble(
-  ~chrom, ~start,  ~end,
-  "chr1", 1657492, 2657492,
-  "chr2", 2501324, 3094650
+  ~chrom , ~start  , ~end    ,
+  "chr1" , 1657492 , 2657492 ,
+  "chr2" , 2501324 , 3094650
 )
 
 bed
@@ -43,18 +43,18 @@ bed
 ## -----------------------------------------------------------------------------
 # a chromosome 100 basepairs in length
 chrom <- tribble(
-  ~chrom, ~start, ~end,
-  "chr1", 0,      100
+  ~chrom , ~start , ~end ,
+  "chr1" ,      0 ,  100
 )
 
 chrom
 
 # single base-pair intervals
 bases <- tribble(
-  ~chrom, ~start, ~end,
-  "chr1", 0,      1, # first base of chromosome
-  "chr1", 1,      2, # second base of chromosome
-  "chr1", 99,     100 # last base of chromosome
+  ~chrom , ~start , ~end ,
+  "chr1" ,      0 ,    1 , # first base of chromosome
+  "chr1" ,      1 ,    2 , # second base of chromosome
+  "chr1" ,     99 ,  100 # last base of chromosome
 )
 
 bases
@@ -68,41 +68,41 @@ bases
 
 ## -----------------------------------------------------------------------------
 x <- tribble(
-  ~chrom, ~start, ~end,
-  "chr1", 25,     50,
-  "chr1", 100,    125
+  ~chrom , ~start , ~end ,
+  "chr1" ,     25 ,   50 ,
+  "chr1" ,    100 ,  125
 )
 
 y <- tribble(
-  ~chrom, ~start, ~end,
-  "chr1", 30,     75
+  ~chrom , ~start , ~end ,
+  "chr1" ,     30 ,   75
 )
 
 bed_glyph(bed_intersect(x, y))
 
 ## -----------------------------------------------------------------------------
 x <- tribble(
-  ~chrom, ~start, ~end,
-  "chr1", 1, 50,
-  "chr1", 10, 75,
-  "chr1", 100, 120
+  ~chrom , ~start , ~end ,
+  "chr1" ,      1 ,   50 ,
+  "chr1" ,     10 ,   75 ,
+  "chr1" ,    100 ,  120
 )
 
 bed_glyph(bed_merge(x))
 
 ## -----------------------------------------------------------------------------
 x <- tribble(
-  ~chrom, ~start, ~end, ~strand,
-  "chr1", 1,      100,  "+",
-  "chr1", 50,     150,  "+",
-  "chr2", 100,    200,  "-"
+  ~chrom , ~start , ~end , ~strand ,
+  "chr1" ,      1 ,  100 , "+"     ,
+  "chr1" ,     50 ,  150 , "+"     ,
+  "chr2" ,    100 ,  200 , "-"
 )
 
 y <- tribble(
-  ~chrom, ~start, ~end, ~strand,
-  "chr1", 50,     125,  "+",
-  "chr1", 50,     150,  "-",
-  "chr2", 50,     150,  "+"
+  ~chrom , ~start , ~end , ~strand ,
+  "chr1" ,     50 ,  125 , "+"     ,
+  "chr1" ,     50 ,  150 , "-"     ,
+  "chr2" ,     50 ,  150 , "+"
 )
 
 # intersect tbls by strand

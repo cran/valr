@@ -71,11 +71,16 @@ bed_genomecov <- function(x, genome, zero_depth = FALSE) {
 
   max_coords <- group_chrom_sizes(x, genome)
 
+  # Ensure coordinates are doubles for C++
+  x <- mutate(x, start = as.numeric(.data[["start"]]), end = as.numeric(.data[["end"]]))
+  max_coords <- as.numeric(max_coords)
+
   res <- gcoverage_impl(x, max_coords)
   res <- tibble::as_tibble(res)
 
   # drop non-grouped cols as values no longer match ivls
-  res <- select(res, chrom, start, end, one_of(grp_cols), .depth)
+  select_cols <- c("chrom", "start", "end", grp_cols, ".depth")
+  res <- select(res, all_of(select_cols))
 
   if (!zero_depth) {
     res <- res[res[[".depth"]] > 0, ]
@@ -88,10 +93,10 @@ bed_genomecov <- function(x, genome, zero_depth = FALSE) {
       missing_chrom_ivls[[".depth"]] <- 0L
       missing_chrom_ivls <- select(
         missing_chrom_ivls,
-        chrom,
-        start,
-        end = size,
-        .depth
+        all_of("chrom"),
+        all_of("start"),
+        end = all_of("size"),
+        all_of(".depth")
       )
 
       if (length(groups) > 1) {

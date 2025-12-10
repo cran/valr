@@ -67,23 +67,30 @@ bed_merge <- function(x, max_dist = 0, ...) {
   # if no dots are passed then use fast internal merge
   if (!is.null(substitute(...))) {
     res <- merge_impl(res, max_dist, collapse = FALSE)
+    res <- tibble::as_tibble(res)
     group_vars <- rlang::syms(unique(c("chrom", ".id_merge", groups_x)))
     res <- group_by(res, !!!group_vars)
 
     res <- summarize(
       res,
       !!!rlang::quos(
-        .start = min(start),
-        .end = max(end),
+        .start = min(.data[["start"]]),
+        .end = max(.data[["end"]]),
         ...
       )
     )
-    res <- select(res, everything(), start = .start, end = .end)
+    res <- select(
+      res,
+      everything(),
+      start = all_of(".start"),
+      end = all_of(".end")
+    )
 
     res <- ungroup(res)
     res <- select(res, !!quo(-one_of(".id_merge")))
   } else {
     res <- merge_impl(res, max_dist, collapse = TRUE)
+    res <- tibble::as_tibble(res)
     res <- select(res, !!!rlang::syms(c("chrom", "start", "end", groups_x)))
   }
   res <- ungroup(res)

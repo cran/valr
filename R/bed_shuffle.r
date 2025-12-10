@@ -51,17 +51,23 @@ bed_shuffle <- function(
   }
 
   # make genome into an interval tbl
-  genome_incl <- mutate(genome, start = 0, end = size)
-  genome_incl <- select(genome_incl, chrom, start, end)
+  genome_incl <- mutate(genome, start = 0, end = .data[["size"]])
+  genome_incl <- select(
+    genome_incl,
+    all_of("chrom"),
+    all_of("start"),
+    all_of("end")
+  )
 
   # find the included intervals bounds. case where only incl intervals are
   # defined is not evaluated explicitly, so is the default
   if (is.null(incl) && is.null(excl)) {
     incl <- genome_incl
+    # TODO: revisit when min_overlap default changes to 1L
   } else if (is.null(incl) && !is.null(excl)) {
-    incl <- bed_subtract(genome_incl, excl)
+    incl <- bed_subtract(genome_incl, excl, min_overlap = 0L)
   } else if (!is.null(incl) && !is.null(excl)) {
-    incl <- bed_subtract(incl, excl)
+    incl <- bed_subtract(incl, excl, min_overlap = 0L)
   }
 
   if (nrow(incl) == 0 || is.null(incl)) {

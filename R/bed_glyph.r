@@ -44,7 +44,9 @@ bed_glyph <- function(expr, label = NULL) {
   args_req <- names(args_all[sapply(args_all, is.name)])
 
   # for bed_intersect replace ... with y
-  if (expr[[1]] == "bed_intersect") args_req[args_req == "..."] <- "y"
+  if (expr[[1]] == "bed_intersect") {
+    args_req[args_req == "..."] <- "y"
+  }
 
   args_excl <- c("genome", "...")
   args_req <- args_req[!args_req %in% args_excl]
@@ -63,8 +65,12 @@ bed_glyph <- function(expr, label = NULL) {
 
   # get default columns
   cols_default <- c("chrom")
-  if ("start" %in% names(res)) cols_default <- c(cols_default, "start")
-  if ("end" %in% names(res)) cols_default <- c(cols_default, "end")
+  if ("start" %in% names(res)) {
+    cols_default <- c(cols_default, "start")
+  }
+  if ("end" %in% names(res)) {
+    cols_default <- c(cols_default, "end")
+  }
 
   cols_vars <- rlang::syms(cols_default)
   cols_out <- select(res, !!!cols_vars)
@@ -107,20 +113,20 @@ bed_glyph <- function(expr, label = NULL) {
   }
 
   # assign `.y` values in the result based on clustering
-  ys <- group_by(res, .facet)
+  ys <- group_by(res, .data[[".facet"]])
   ys <- bed_cluster(ys)
-  ys <- group_by(ys, .facet, .id)
-  ys <- mutate(ys, .y = row_number(.id))
+  ys <- group_by(ys, .data[[".facet"]], .data[[".id"]])
+  ys <- mutate(ys, .y = row_number(.data[[".id"]]))
   ys <- ungroup(ys)
 
-  ys <- arrange(ys, .facet, chrom, start)
-  res <- arrange(res, .facet, chrom, start)
+  ys <- arrange(ys, .data[[".facet"]], .data[["chrom"]], .data[["start"]])
+  res <- arrange(res, .data[[".facet"]], .data[["chrom"]], .data[["start"]])
 
   res <- mutate(res, .y = ys$.y)
 
   # make name_result col appear last in the facets
   fct_names <- c(expr_vars, name_result)
-  res <- mutate(res, .facet = factor(.facet, levels = fct_names))
+  res <- mutate(res, .facet = factor(.data[[".facet"]], levels = fct_names))
 
   # plot title
   title <- deparse(substitute(expr))

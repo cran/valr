@@ -47,6 +47,10 @@ check_interval <- function(x) {
   if (!tibble::is_tibble(x)) {
     x <- tibble::as_tibble(x)
   }
+
+  # Ensure start/end are doubles for C++ code (handles large coordinates)
+  x <- mutate(x, start = as.numeric(.data[["start"]]), end = as.numeric(.data[["end"]]))
+
   x
 }
 
@@ -88,6 +92,9 @@ check_genome <- function(x) {
   if (!tibble::is_tibble(x)) {
     x <- tibble::as_tibble(x)
   }
+
+  # Ensure size is double for C++ code (handles large coordinates)
+  x <- mutate(x, size = as.numeric(.data[["size"]]))
 
   x
 }
@@ -156,6 +163,9 @@ gr_to_bed <- function(x) {
     strand = as.character(x@strand)
   )
 
-  res <- mutate(res, strand = ifelse(strand == "*", ".", strand))
+  res <- mutate(
+    res,
+    strand = ifelse(.data[["strand"]] == "*", ".", .data[["strand"]])
+  )
   res
 }

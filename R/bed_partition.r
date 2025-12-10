@@ -68,12 +68,13 @@ bed_partition <- function(x, ...) {
   groups <- rlang::syms(unique(c("chrom", groups_df)))
   x <- group_by(x, !!!groups)
 
-  res <- partition_impl(x)
+  res <- partition_impl(x, -1L)
 
   res <- tibble::as_tibble(res)
 
   # drop non-grouped cols as values no longer match ivls
-  res <- select(res, chrom, start, end, one_of(groups_df))
+  select_cols <- c("chrom", "start", "end", groups_df)
+  res <- select(res, all_of(select_cols))
 
   # if dots are passed then map values
   if (!is.null(substitute(...))) {

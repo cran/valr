@@ -51,6 +51,17 @@
 #'
 #' bed_window(x, y, genome, both = 100)
 #'
+#' # add a `.dist` column to the output
+#' \dontrun{
+#' bed_window(x, y, genome, both = 200) |>
+#'  mutate(
+#'    .dist = case_when(
+#'      .overlap == 0 ~ abs(pmax(start.x, start.y) - pmin(end.x, end.y)),
+#'      .default = 0
+#'    )
+#'  )
+#' }
+#'
 #' @seealso \url{https://bedtools.readthedocs.io/en/latest/content/tools/window.html}
 #'
 #' @export
@@ -63,7 +74,7 @@ bed_window <- function(x, y, genome, ...) {
   y <- check_interval(y)
   genome <- check_genome(genome)
 
-  x <- mutate(x, .start = start, .end = end)
+  x <- mutate(x, .start = .data[["start"]], .end = .data[["end"]])
 
   # capture command line args
   cmd_args <- list(...)
@@ -83,16 +94,20 @@ bed_window <- function(x, y, genome, ...) {
   )
 
   # pass new list of args to bed_intersect
+  # TODO: revisit when min_overlap default changes to 1L
+  if (!"min_overlap" %in% names(intersect_args)) {
+    intersect_args$min_overlap <- 0L
+  }
   res <- do.call(
     bed_intersect,
     c(list("x" = slop_x, "y" = y), intersect_args)
   )
 
-  res <- mutate(res, start.x = .start.x, end.x = .end.x)
+  res <- mutate(res, start.x = .data[[".start.x"]], end.x = .data[[".end.x"]])
 
   res <- ungroup(res)
 
-  res <- select(res, -.start.x, -.end.x)
+  res <- select(res, -all_of(c(".start.x", ".end.x")))
 
   res
 }
